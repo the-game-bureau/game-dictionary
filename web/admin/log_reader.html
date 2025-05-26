@@ -231,9 +231,9 @@
         <h1>📋 Log Reader</h1>
         <div class="controls">
             <div class="filter-group">
-                <label>Filter by Time:</label>
+                <label>Filter by Time Window:</label>
                 <select id="timeFilter">
-                    <option value="">All Times</option>
+                    <option value="">All Time Windows</option>
                 </select>
             </div>
         </div>
@@ -277,18 +277,18 @@
 
         async function loadLogData() {
             try {
-                logContainer.innerHTML = '<div class="no-logs">Loading log.txt...</div>';
+                logContainer.innerHTML = '<div class="no-logs">Loading /logs/log.txt...</div>';
                 
-                // Fetch the log file
-                const response = await fetch('log.txt');
+                // Fetch the log file from root logs directory
+                const response = await fetch('/logs/log.txt');
                 if (!response.ok) {
-                    throw new Error(`Failed to load log.txt: ${response.status} ${response.statusText}`);
+                    throw new Error(`Failed to load /logs/log.txt: ${response.status} ${response.statusText}`);
                 }
                 
                 const logData = await response.text();
                 parseLogFile(logData);
             } catch (error) {
-                showError(`Error loading log.txt: ${error.message}<br><br>Make sure log.txt is in the same directory as this HTML file.`);
+                showError(`Error loading /logs/log.txt: ${error.message}<br><br>Make sure log.txt is in the /logs directory at the server root.`);
             }
         }
 
@@ -317,18 +317,37 @@
         }
 
         function parseLogLine(line, lineNumber) {
-            // Parse format: LEVEL|TIMESTAMP|ACTUAL_LEVEL|MESSAGE
+            // Parse format: LEVEL|TIMESTAMP|MESSAGE or LEVEL|TIMESTAMP|ACTUAL_LEVEL|MESSAGE
             const parts = line.split('|');
-            if (parts.length < 4) return null;
+            if (parts.length < 3) return null;
 
-            const firstField = parts[0].trim(); // First field (usually INFO)
+            const firstField = parts[0].trim();
             const timestamp = parts[1].trim();
-            const actualLevel = parts[2].trim(); // Third field is the actual level (START, INFO, PROGRESS, etc.)
-            const message = parts.slice(3).join('|').trim();
+            
+            let level, displayLevel, message;
+            
+            if (parts.length >= 4) {
+                // Format: LEVEL|TIMESTAMP|ACTUAL_LEVEL|MESSAGE
+                const actualLevel = parts[2].trim();
+                message = parts.slice(3).join('|').trim();
+                level = actualLevel.toLowerCase();
+                displayLevel = actualLevel;
+            } else {
+                // Format: LEVEL|TIMESTAMP|MESSAGE
+                message = parts.slice(2).join('|').trim();
+                level = firstField.toLowerCase();
+                displayLevel = firstField;
+            }
+
+            // Special handling for PROGRESS entries
+            if (message.includes('%') && message.includes('bytes')) {
+                level = 'progress';
+                displayLevel = 'PROGRESS';
+            }
 
             return {
-                level: actualLevel.toLowerCase(), // Use actual level for styling
-                displayLevel: actualLevel, // Use actual level for display
+                level: level,
+                displayLevel: displayLevel,
                 timestamp,
                 message,
                 originalLine: line,
@@ -337,40 +356,50 @@
         }
 
         function populateTimeFilter() {
-            // Get unique timestamps (full date and time)
-            const uniqueTimestamps = [...new Set(allLogEntries.map(entry => {
+            // Get unique 5-minute windows
+            const uniqueTimeWindows = [...new Set(allLogEntries.map(entry => {
                 const date = new Date(entry.timestamp);
-                return date.toLocaleString(); // Full date and time
+                // Round down to 5-minute window
+                const roundedMinutes = Math.floor(date.getMinutes() / 5) * 5;
+                date.setMinutes(roundedMinutes, 0, 0); // Set seconds and milliseconds to 0
+                return date.toLocaleString();
             }))];
             
-            // Sort timestamps newest first
-            uniqueTimestamps.sort((a, b) => new Date(b) - new Date(a));
+            // Sort time windows newest first
+            uniqueTimeWindows.sort((a, b) => new Date(b) - new Date(a));
 
             // Clear existing options
-            timeFilter.innerHTML = '<option value="">All Timestamps</option>';
+            timeFilter.innerHTML = '<option value="">All Time Windows</option>';
             
-            // Add timestamp options
-            uniqueTimestamps.forEach(timestamp => {
+            // Add time window options
+            uniqueTimeWindows.forEach(timeWindow => {
                 const option = document.createElement('option');
-                option.value = timestamp;
-                option.textContent = timestamp;
+                option.value = timeWindow;
+                const startTime = new Date(timeWindow);
+                const endTime = new Date(startTime.getTime() + 5 * 60 * 1000); // Add 5 minutes
+                option.textContent = `${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} (${startTime.toLocaleDateString()})`;
                 timeFilter.appendChild(option);
             });
 
-            // Auto-select most recent timestamp by default
-            if (uniqueTimestamps.length > 0) {
-                timeFilter.value = uniqueTimestamps[0];
+            // Auto-select most recent time window by default
+            if (uniqueTimeWindows.length > 0) {
+                timeFilter.value = uniqueTimeWindows[0];
             }
         }
 
         function applyFilters() {
-            const selectedTimestamp = timeFilter.value;
+            const selectedTimeWindow = timeFilter.value;
 
             filteredEntries = allLogEntries.filter(entry => {
-                if (!selectedTimestamp) return true;
+                if (!selectedTimeWindow) return true;
                 
-                const entryTimestamp = new Date(entry.timestamp).toLocaleString();
-                return entryTimestamp === selectedTimestamp;
+                // Get the 5-minute window for this entry
+                const entryDate = new Date(entry.timestamp);
+                const roundedMinutes = Math.floor(entryDate.getMinutes() / 5) * 5;
+                entryDate.setMinutes(roundedMinutes, 0, 0);
+                const entryTimeWindow = entryDate.toLocaleString();
+                
+                return entryTimeWindow === selectedTimeWindow;
             });
 
             renderLogEntries();
@@ -379,26 +408,32 @@
 
         function renderLogEntries() {
             if (filteredEntries.length === 0) {
-                logContainer.innerHTML = '<div class="no-logs">No log entries match the selected timestamp</div>';
+                logContainer.innerHTML = '<div class="no-logs">No log entries match the selected time window</div>';
                 return;
             }
 
-            // Group entries by timestamp
+            // Group entries by 5-minute time windows
             const groupedEntries = {};
             filteredEntries.forEach(entry => {
-                const timestamp = entry.timestamp;
-                if (!groupedEntries[timestamp]) {
-                    groupedEntries[timestamp] = [];
+                const entryDate = new Date(entry.timestamp);
+                const roundedMinutes = Math.floor(entryDate.getMinutes() / 5) * 5;
+                entryDate.setMinutes(roundedMinutes, 0, 0);
+                const timeWindow = entryDate.toLocaleString();
+                
+                if (!groupedEntries[timeWindow]) {
+                    groupedEntries[timeWindow] = [];
                 }
-                groupedEntries[timestamp].push(entry);
+                groupedEntries[timeWindow].push(entry);
             });
 
-            // Sort timestamps (newest first)
-            const sortedTimestamps = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
+            // Sort time windows (newest first)
+            const sortedTimeWindows = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
 
-            const html = sortedTimestamps.map(timestamp => {
-                const entries = groupedEntries[timestamp];
-                const formattedTimestamp = formatTimestamp(timestamp);
+            const html = sortedTimeWindows.map(timeWindow => {
+                const entries = groupedEntries[timeWindow];
+                const startTime = new Date(timeWindow);
+                const endTime = new Date(startTime.getTime() + 5 * 60 * 1000);
+                const formattedTimeWindow = `${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} • ${startTime.toLocaleDateString()}`;
                 
                 const entriesHtml = entries.map(entry => `
                     <div class="log-item ${entry.level}">
@@ -409,7 +444,7 @@
 
                 return `
                     <div class="log-entry-group">
-                        <div class="timestamp-header">${formattedTimestamp}</div>
+                        <div class="timestamp-header">${formattedTimeWindow}</div>
                         <div class="log-entries">
                             ${entriesHtml}
                         </div>
