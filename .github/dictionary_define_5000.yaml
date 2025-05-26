@@ -1,0 +1,421 @@
+# GitHub Actions Workflow
+# Save as: .github/workflows/daily-dictionary.yml
+# This will automatically run dictionary_tools.py define at 5 AM daily until 4000 definitions
+
+name: Daily Dictionary Definition Updates
+
+on:
+  schedule:
+    # Run at 5:00 AM UTC daily
+    - cron: '0 5 * * *'
+  
+  # Allow manual triggering from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  update-dictionary:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: Check current definition count
+      id: check_count
+      run: |
+        python3 -c "
+        import xml.etree.ElementTree as ET
+        from pathlib import Path
+        
+        xml_path = Path('data/dictionary.xml')
+        defined_count = 0
+        
+        if xml_path.exists():
+            try:
+                tree = ET.parse(xml_path)
+                root = tree.getroot()
+                
+                for word_elem in root.findall('word'):
+                    if word_elem.find('definition') is not None:
+                        defined_count += 1
+                        
+                print(f'📊 Current definitions: {defined_count}')
+                
+                # Set GitHub Actions output
+                with open('$GITHUB_OUTPUT', 'a') as f:
+                    f.write(f'defined_count={defined_count}\n')
+                    f.write(f'should_run={\"true\" if defined_count < 4000 else \"false\"}\n')
+                    
+            except Exception as e:
+                print(f'❌ Error checking definitions: {e}')
+                with open('$GITHUB_OUTPUT', 'a') as f:
+                    f.write('defined_count=0\n')
+                    f.write('should_run=true\n')
+        else:
+            print('📁 No dictionary.xml found, will run full process')
+            with open('$GITHUB_OUTPUT', 'a') as f:
+                f.write('defined_count=0\n')
+                f.write('should_run=true\n')
+        "
+        
+    - name: Update API keys in script
+      if: steps.check_count.outputs.should_run == 'true'
+      run: |
+        # Update RapidAPI key if provided
+        if [ ! -z "${{ secrets.RAPIDAPI_KEY }}" ]; then
+          sed -i 's/RAPIDAPI_KEY = "87eb0e8b54mshcc502a511d6339ep1290f4jsne647be278143"/RAPIDAPI_KEY = "${{ secrets.RAPIDAPI_KEY }}"/' dictionary_tools.py
+          echo "✅ Updated RapidAPI key"
+        fi
+        
+        # Update Wordnik key if provided
+        if [ ! -z "${{ secrets.WORDNIK_API_KEY }}" ]; then
+          sed -i 's/WORDNIK_API_KEY = None/WORDNIK_API_KEY = "${{ secrets.WORDNIK_API_KEY }}"/' dictionary_tools.py
+          echo "✅ Updated Wordnik API key"
+        fi
+        
+    - name: Run dictionary definition lookup
+      if: steps.check_count.outputs.should_run == 'true'
+      run: |
+        echo "📊 Current definitions: ${{ steps.check_count.outputs.defined_count }}"
+        echo "🎯 Target: 4000 definitions"
+        echo "🚀 Running dictionary_tools.py define..."
+        echo ""
+        
+        # Run option 3 (define) from dictionary_tools.py
+        python3 dictionary_tools.py define
+        
+    - name: Check completion status
+      if: steps.check_count.outputs.should_run == 'true'
+      run: |
+        python3 -c "
+        import xml.etree.ElementTree as ET
+        from pathlib import Path
+        
+        xml_path = Path('data/dictionary.xml')
+        defined_count = 0
+        
+        if xml_path.exists():
+            try:
+                tree = ET.parse(xml_path)
+                root = tree.getroot()
+                
+                for word_elem in root.findall('word'):
+                    if word_elem.find('definition') is not None:
+                        defined_count += 1
+                        
+                print(f'📊 Definitions after run: {defined_count}')
+                
+                if defined_count >= 4000:
+                    print('🎉 TARGET REACHED! 4000+ words defined.')
+                    print('🛑 Daily automation will stop running.')
+                else:
+                    remaining = 4000 - defined_count
+                    progress = (defined_count / 4000) * 100
+                    print(f'📈 Progress: {defined_count}/4000 ({progress:.1f}%)')
+                    print(f'⏳ {remaining} definitions remaining')
+                    print(f'📅 Estimated completion: ~{remaining // 100} more days')
+                    
+            except Exception as e:
+                print(f'❌ Error checking final count: {e}')
+        "
+        
+    - name: Commit and push changes
+      if: steps.check_count.outputs.should_run == 'true'
+      run: |
+        # Configure git
+        git config --local user.email "dictionary-bot@github.com"
+        git config --local user.name "Dictionary Bot"
+        
+        # Add any changed files
+        git add data/ logs/ || true
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "ℹ️  No changes to commit"
+        else
+          # Get current count for commit message
+          CURRENT_COUNT=$(python3 -c "
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          xml_path = Path('data/dictionary.xml')
+          if xml_path.exists():
+              tree = ET.parse(xml_path)
+              root = tree.getroot()
+              count = sum(1 for word in root.findall('word') if word.find('definition') is not None)
+              print(count)
+          else:
+              print(0)
+          ")
+          
+          PROGRESS=$(python3 -c "print(f'{int($CURRENT_COUNT)/40:.1f}%')")
+          
+          git commit -m "🤖 Daily dictionary update: ${CURRENT_COUNT}/4000 definitions (${PROGRESS})"
+          git push
+          echo "✅ Changes committed and pushed"
+        fi
+        
+    - name: Skip message
+      if: steps.check_count.outputs.should_run == 'false'
+      run: |
+        echo "🎉 TARGET ALREADY REACHED!"
+        echo "📊 ${{ steps.check_count.outputs.defined_count }}/4000 definitions complete."
+        echo "🛑 Skipping daily update - automation complete!"
+
+---
+
+# Alternative: Local Cron Job Setup
+# For Linux/Mac systems
+
+# Step 1: Create this shell script
+# Save as: run_dictionary_daily.sh
+#!/bin/bash
+
+# Set the path to your dictionary project
+PROJECT_PATH="/path/to/your/dictionary/project"
+cd "$PROJECT_PATH"
+
+# Log file for cron output
+LOG_FILE="logs/daily_automation.log"
+mkdir -p logs
+
+# Function to log with timestamp
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+log_message "🤖 Starting daily dictionary automation check"
+
+# Check current definition count
+CURRENT_COUNT=$(python3 -c "
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+xml_path = Path('data/dictionary.xml')
+if xml_path.exists():
+    try:
+        tree = ET.parse(xml_path)
+        root = tree.getroot()
+        count = sum(1 for word in root.findall('word') if word.find('definition') is not None)
+        print(count)
+    except:
+        print(0)
+else:
+    print(0)
+" 2>/dev/null)
+
+TARGET_COUNT=4000
+
+log_message "📊 Current definitions: $CURRENT_COUNT"
+log_message "🎯 Target definitions: $TARGET_COUNT"
+
+# Check if target is reached
+if [ "$CURRENT_COUNT" -ge "$TARGET_COUNT" ]; then
+    log_message "🎉 TARGET REACHED! $CURRENT_COUNT/$TARGET_COUNT definitions complete."
+    log_message "🛑 Automation complete - removing cron job"
+    
+    # Remove this cron job since we're done
+    crontab -l | grep -v "run_dictionary_daily.sh" | crontab -
+    
+    log_message "✅ Cron job removed successfully"
+    exit 0
+fi
+
+# Calculate progress
+REMAINING=$((TARGET_COUNT - CURRENT_COUNT))
+PROGRESS=$(python3 -c "print(f'{$CURRENT_COUNT/$TARGET_COUNT*100:.1f}')")
+
+log_message "📈 Progress: $PROGRESS%"
+log_message "⏳ Remaining: $REMAINING definitions"
+
+# Set API keys if available (optional)
+if [ ! -z "$RAPIDAPI_KEY" ]; then
+    sed -i.bak "s/RAPIDAPI_KEY = None/RAPIDAPI_KEY = \"$RAPIDAPI_KEY\"/" dictionary_tools.py
+    log_message "🔑 Updated RapidAPI key"
+fi
+
+if [ ! -z "$WORDNIK_API_KEY" ]; then
+    sed -i.bak "s/WORDNIK_API_KEY = None/WORDNIK_API_KEY = \"$WORDNIK_API_KEY\"/" dictionary_tools.py
+    log_message "🔑 Updated Wordnik API key"
+fi
+
+# Run the dictionary tools
+log_message "🚀 Running dictionary_tools.py define..."
+
+if python3 dictionary_tools.py define >> "$LOG_FILE" 2>&1; then
+    # Check new count
+    NEW_COUNT=$(python3 -c "
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+xml_path = Path('data/dictionary.xml')
+if xml_path.exists():
+    try:
+        tree = ET.parse(xml_path)
+        root = tree.getroot()
+        count = sum(1 for word in root.findall('word') if word.find('definition') is not None)
+        print(count)
+    except:
+        print(0)
+else:
+    print(0)
+" 2>/dev/null)
+    
+    ADDED=$((NEW_COUNT - CURRENT_COUNT))
+    
+    log_message "✅ Dictionary update completed successfully"
+    log_message "📊 Final count: $NEW_COUNT definitions"
+    log_message "➕ Added this run: $ADDED definitions"
+    
+    # Check if we've reached the target
+    if [ "$NEW_COUNT" -ge "$TARGET_COUNT" ]; then
+        log_message "🎊 TARGET REACHED! $NEW_COUNT/$TARGET_COUNT definitions complete!"
+        log_message "🛑 Removing cron job - automation complete"
+        
+        # Remove the cron job
+        crontab -l | grep -v "run_dictionary_daily.sh" | crontab -
+        log_message "✅ Cron job removed successfully"
+    else
+        REMAINING=$((TARGET_COUNT - NEW_COUNT))
+        log_message "⏳ Still need: $REMAINING definitions"
+        log_message "🔄 Will run again tomorrow at 5:00 AM"
+    fi
+    
+else
+    log_message "❌ Dictionary update failed"
+    exit 1
+fi
+
+log_message "🏁 Daily automation check complete"
+log_message "================================================"
+
+# Step 2: Make it executable
+# chmod +x run_dictionary_daily.sh
+
+# Step 3: Add to crontab
+# crontab -e
+# Add this line (replace /path/to/your/dictionary/project with actual path):
+# 0 5 * * * /path/to/your/dictionary/project/run_dictionary_daily.sh
+
+---
+
+# Windows Task Scheduler Setup
+# Save as: run_dictionary_daily.bat
+
+@echo off
+setlocal
+
+:: Set the path to your dictionary project
+set PROJECT_PATH=C:\path\to\your\dictionary\project
+cd /d "%PROJECT_PATH%"
+
+:: Create logs directory if it doesn't exist
+if not exist logs mkdir logs
+
+:: Log file for task scheduler output
+set LOG_FILE=logs\daily_automation.log
+
+:: Function to log with timestamp
+echo [%date% %time%] 🤖 Starting daily dictionary automation check >> "%LOG_FILE%"
+
+:: Check current definition count
+for /f %%i in ('python -c "import xml.etree.ElementTree as ET; from pathlib import Path; xml_path = Path('data/dictionary.xml'); print(sum(1 for word in ET.parse(xml_path).getroot().findall('word') if word.find('definition') is not None) if xml_path.exists() else 0)"') do set CURRENT_COUNT=%%i
+
+set TARGET_COUNT=4000
+
+echo [%date% %time%] 📊 Current definitions: %CURRENT_COUNT% >> "%LOG_FILE%"
+echo [%date% %time%] 🎯 Target definitions: %TARGET_COUNT% >> "%LOG_FILE%"
+
+:: Check if target is reached
+if %CURRENT_COUNT% geq %TARGET_COUNT% (
+    echo [%date% %time%] 🎉 TARGET REACHED! %CURRENT_COUNT%/%TARGET_COUNT% definitions complete. >> "%LOG_FILE%"
+    echo [%date% %time%] 🛑 Automation complete >> "%LOG_FILE%"
+    goto :eof
+)
+
+:: Run the dictionary tools
+echo [%date% %time%] 🚀 Running dictionary_tools.py define... >> "%LOG_FILE%"
+
+python dictionary_tools.py define >> "%LOG_FILE%" 2>&1
+
+if %errorlevel% equ 0 (
+    :: Check new count
+    for /f %%i in ('python -c "import xml.etree.ElementTree as ET; from pathlib import Path; xml_path = Path('data/dictionary.xml'); print(sum(1 for word in ET.parse(xml_path).getroot().findall('word') if word.find('definition') is not None) if xml_path.exists() else 0)"') do set NEW_COUNT=%%i
+    
+    set /a ADDED=%NEW_COUNT%-%CURRENT_COUNT%
+    
+    echo [%date% %time%] ✅ Dictionary update completed successfully >> "%LOG_FILE%"
+    echo [%date% %time%] 📊 Final count: %NEW_COUNT% definitions >> "%LOG_FILE%"
+    echo [%date% %time%] ➕ Added this run: %ADDED% definitions >> "%LOG_FILE%"
+    
+    if %NEW_COUNT% geq %TARGET_COUNT% (
+        echo [%date% %time%] 🎊 TARGET REACHED! %NEW_COUNT%/%TARGET_COUNT% definitions complete! >> "%LOG_FILE%"
+        echo [%date% %time%] 🛑 Automation complete >> "%LOG_FILE%"
+    ) else (
+        set /a REMAINING=%TARGET_COUNT%-%NEW_COUNT%
+        echo [%date% %time%] ⏳ Still need: !REMAINING! definitions >> "%LOG_FILE%"
+        echo [%date% %time%] 🔄 Will run again tomorrow at 5:00 AM >> "%LOG_FILE%"
+    )
+) else (
+    echo [%date% %time%] ❌ Dictionary update failed >> "%LOG_FILE%"
+)
+
+echo [%date% %time%] 🏁 Daily automation check complete >> "%LOG_FILE%"
+echo [%date% %time%] ================================================ >> "%LOG_FILE%"
+
+# Windows Task Scheduler XML Import
+# Save as: dictionary_daily_task.xml
+# Import this into Task Scheduler
+
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Date>2024-01-01T00:00:00</Date>
+    <Author>Dictionary Automation</Author>
+    <Description>Daily dictionary definition updates at 5 AM until 4000 definitions reached</Description>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>2024-01-01T05:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByDay>
+        <DaysInterval>1</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LimitedUser</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <IdleSettings>
+      <StopOnIdleEnd>false</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions>
+    <Exec>
+      <Command>C:\path\to\your\dictionary\project\run_dictionary_daily.bat</Command>
+      <WorkingDirectory>C:\path\to\your\dictionary\project</WorkingDirectory>
+    </Exec>
+  </Actions>
+</Task>

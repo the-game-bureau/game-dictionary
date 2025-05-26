@@ -1,0 +1,548 @@
+INFO|2025-05-26T15:09:01|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:09:01|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:09:01|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:09:01|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:09:01|No existing dictionary found, creating new one
+INFO|2025-05-26T15:09:01|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:09:02|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:09:02|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:09:02|Downloaded 172823 valid words
+INFO|2025-05-26T15:09:02|Updated dictionary: 172823 added, 0 removed
+INFO|2025-05-26T15:09:02|Final word count: 172823
+INFO|2025-05-26T15:09:02|Fetch operation completed successfully
+INFO|2025-05-26T15:09:02|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:09:02|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:09:03|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:09:03|XML contains 172823 word elements
+INFO|2025-05-26T15:09:03|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:09:03|Found 172823 words without definitions
+INFO|2025-05-26T15:09:03|Found 0 words already with definitions
+INFO|2025-05-26T15:09:03|Generating AI definitions for up to 100 words
+INFO|2025-05-26T15:09:03|Generated 25 definitions so far...
+INFO|2025-05-26T15:09:03|Generated 50 definitions so far...
+INFO|2025-05-26T15:09:03|Generated 75 definitions so far...
+INFO|2025-05-26T15:09:03|Generated 100 definitions so far...
+INFO|2025-05-26T15:09:03|Successfully generated 100 AI definitions
+INFO|2025-05-26T15:09:03|Adding definitions to 100 words
+INFO|2025-05-26T15:09:05|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:09:05|Added 100 AI-generated definitions
+INFO|2025-05-26T15:09:05|All operations completed successfully
+INFO|2025-05-26T15:09:09|Program exited by user
+INFO|2025-05-26T15:15:45|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:15:45|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:15:45|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:15:45|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:15:45|Original dictionary has 172823 words
+INFO|2025-05-26T15:15:45|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:15:45|Loaded 172823 existing words
+INFO|2025-05-26T15:15:45|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:15:46|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:15:46|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:15:46|Downloaded 172823 valid words
+INFO|2025-05-26T15:15:46|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:15:46|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:15:46|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:15:47|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:15:47|XML contains 172823 word elements
+INFO|2025-05-26T15:15:47|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:15:47|Found 172823 words without definitions
+INFO|2025-05-26T15:15:47|Found 0 words already with definitions
+INFO|2025-05-26T15:15:47|Looking up definitions for up to 100 words from dictionary API
+WARNING|2025-05-26T15:15:59|HTTP error looking up 'zorillo': 429
+WARNING|2025-05-26T15:15:59|HTTP error looking up 'zorillos': 429
+WARNING|2025-05-26T15:15:59|HTTP error looking up 'zorils': 429
+WARNING|2025-05-26T15:15:59|HTTP error looking up 'zoris': 429
+WARNING|2025-05-26T15:16:00|HTTP error looking up 'zoster': 429
+WARNING|2025-05-26T15:16:00|HTTP error looking up 'zosters': 429
+WARNING|2025-05-26T15:16:00|HTTP error looking up 'zouave': 429
+WARNING|2025-05-26T15:16:00|HTTP error looking up 'zouaves': 429
+WARNING|2025-05-26T15:16:01|HTTP error looking up 'zounds': 429
+WARNING|2025-05-26T15:16:01|HTTP error looking up 'zowie': 429
+WARNING|2025-05-26T15:16:01|HTTP error looking up 'zoysia': 429
+WARNING|2025-05-26T15:16:01|HTTP error looking up 'zoysias': 429
+WARNING|2025-05-26T15:16:01|HTTP error looking up 'zucchetto': 429
+WARNING|2025-05-26T15:16:02|HTTP error looking up 'zucchettos': 429
+WARNING|2025-05-26T15:16:02|HTTP error looking up 'zucchini': 429
+WARNING|2025-05-26T15:16:02|HTTP error looking up 'zucchinis': 429
+WARNING|2025-05-26T15:16:02|HTTP error looking up 'zwieback': 429
+WARNING|2025-05-26T15:16:03|HTTP error looking up 'zwiebacks': 429
+WARNING|2025-05-26T15:16:03|HTTP error looking up 'zwitterion': 429
+WARNING|2025-05-26T15:16:03|HTTP error looking up 'zwitterionic': 429
+WARNING|2025-05-26T15:16:03|HTTP error looking up 'zwitterions': 429
+WARNING|2025-05-26T15:16:03|HTTP error looking up 'zydeco': 429
+WARNING|2025-05-26T15:16:04|HTTP error looking up 'zydecos': 429
+WARNING|2025-05-26T15:16:04|HTTP error looking up 'zygapophyses': 429
+WARNING|2025-05-26T15:16:04|HTTP error looking up 'zygapophysis': 429
+WARNING|2025-05-26T15:16:04|HTTP error looking up 'zygodactyl': 429
+WARNING|2025-05-26T15:16:05|HTTP error looking up 'zygodactylous': 429
+WARNING|2025-05-26T15:16:05|HTTP error looking up 'zygoid': 429
+WARNING|2025-05-26T15:16:05|HTTP error looking up 'zygoma': 429
+WARNING|2025-05-26T15:16:05|HTTP error looking up 'zygomas': 429
+WARNING|2025-05-26T15:16:06|HTTP error looking up 'zygomata': 429
+WARNING|2025-05-26T15:16:06|HTTP error looking up 'zygomatic': 429
+WARNING|2025-05-26T15:16:06|HTTP error looking up 'zygomorphic': 429
+WARNING|2025-05-26T15:16:06|HTTP error looking up 'zygomorphies': 429
+WARNING|2025-05-26T15:16:06|HTTP error looking up 'zygomorphy': 429
+WARNING|2025-05-26T15:16:07|HTTP error looking up 'zygose': 429
+WARNING|2025-05-26T15:16:07|HTTP error looking up 'zygoses': 429
+WARNING|2025-05-26T15:16:07|HTTP error looking up 'zygosis': 429
+WARNING|2025-05-26T15:16:07|HTTP error looking up 'zygosities': 429
+WARNING|2025-05-26T15:16:08|HTTP error looking up 'zygospore': 429
+WARNING|2025-05-26T15:16:09|HTTP error looking up 'zygote': 429
+WARNING|2025-05-26T15:16:18|HTTP error looking up 'morbidness': 429
+WARNING|2025-05-26T15:16:19|HTTP error looking up 'opprobriums': 429
+WARNING|2025-05-26T15:16:19|HTTP error looking up 'adenyl': 429
+WARNING|2025-05-26T15:16:19|HTTP error looking up 'annihilations': 429
+WARNING|2025-05-26T15:16:19|HTTP error looking up 'woebegonenesses': 429
+WARNING|2025-05-26T15:16:20|HTTP error looking up 'quidnunc': 429
+WARNING|2025-05-26T15:16:20|HTTP error looking up 'lezzes': 429
+WARNING|2025-05-26T15:16:20|HTTP error looking up 'epiphragms': 429
+WARNING|2025-05-26T15:16:20|HTTP error looking up 'strong': 429
+WARNING|2025-05-26T15:16:20|HTTP error looking up 'bobsledder': 429
+WARNING|2025-05-26T15:16:21|HTTP error looking up 'shrieves': 429
+WARNING|2025-05-26T15:16:21|HTTP error looking up 'garrisoning': 429
+WARNING|2025-05-26T15:16:21|HTTP error looking up 'scenically': 429
+WARNING|2025-05-26T15:16:21|HTTP error looking up 'chainman': 429
+WARNING|2025-05-26T15:16:22|HTTP error looking up 'sonneteerings': 429
+WARNING|2025-05-26T15:16:22|HTTP error looking up 'hydrofoil': 429
+WARNING|2025-05-26T15:16:22|HTTP error looking up 'ablutions': 429
+WARNING|2025-05-26T15:16:22|HTTP error looking up 'monochromaticity': 429
+WARNING|2025-05-26T15:16:23|HTTP error looking up 'apterium': 429
+WARNING|2025-05-26T15:16:23|HTTP error looking up 'premonitions': 429
+WARNING|2025-05-26T15:16:23|HTTP error looking up 'allot': 429
+WARNING|2025-05-26T15:16:23|HTTP error looking up 'everting': 429
+WARNING|2025-05-26T15:16:23|HTTP error looking up 'hexades': 429
+WARNING|2025-05-26T15:16:24|HTTP error looking up 'funkers': 429
+WARNING|2025-05-26T15:16:24|HTTP error looking up 'aids': 429
+WARNING|2025-05-26T15:16:24|HTTP error looking up 'gumbotils': 429
+WARNING|2025-05-26T15:16:24|HTTP error looking up 'pickthank': 429
+WARNING|2025-05-26T15:16:25|HTTP error looking up 'blazer': 429
+WARNING|2025-05-26T15:16:25|HTTP error looking up 'toxicants': 429
+WARNING|2025-05-26T15:16:25|HTTP error looking up 'sentimentality': 429
+WARNING|2025-05-26T15:16:25|HTTP error looking up 'sloshes': 429
+WARNING|2025-05-26T15:16:26|HTTP error looking up 'browning': 429
+WARNING|2025-05-26T15:16:26|HTTP error looking up 'couture': 429
+WARNING|2025-05-26T15:16:26|HTTP error looking up 'gratulatory': 429
+WARNING|2025-05-26T15:16:26|HTTP error looking up 'salience': 429
+WARNING|2025-05-26T15:16:26|HTTP error looking up 'searchers': 429
+WARNING|2025-05-26T15:16:27|HTTP error looking up 'hemagglutinating': 429
+WARNING|2025-05-26T15:16:27|HTTP error looking up 'freaked': 429
+WARNING|2025-05-26T15:16:27|HTTP error looking up 'vines': 429
+WARNING|2025-05-26T15:16:27|HTTP error looking up 'cockbill': 429
+WARNING|2025-05-26T15:16:28|HTTP error looking up 'typhons': 429
+WARNING|2025-05-26T15:16:28|HTTP error looking up 'acerbated': 429
+WARNING|2025-05-26T15:16:28|HTTP error looking up 'paras': 429
+WARNING|2025-05-26T15:16:28|HTTP error looking up 'quilled': 429
+INFO|2025-05-26T15:16:29|Found 25 definitions so far...
+WARNING|2025-05-26T15:16:38|HTTP error looking up 'forecaddies': 429
+WARNING|2025-05-26T15:16:38|HTTP error looking up 'mastication': 429
+WARNING|2025-05-26T15:16:38|HTTP error looking up 'reorchestrations': 429
+WARNING|2025-05-26T15:16:39|HTTP error looking up 'cryonic': 429
+WARNING|2025-05-26T15:16:39|HTTP error looking up 'innovative': 429
+WARNING|2025-05-26T15:16:39|HTTP error looking up 'dewaters': 429
+WARNING|2025-05-26T15:16:39|HTTP error looking up 'superbureaucrats': 429
+WARNING|2025-05-26T15:16:40|HTTP error looking up 'chelipeds': 429
+WARNING|2025-05-26T15:16:40|HTTP error looking up 'positively': 429
+WARNING|2025-05-26T15:16:40|HTTP error looking up 'chromosphere': 429
+WARNING|2025-05-26T15:16:40|HTTP error looking up 'retene': 429
+WARNING|2025-05-26T15:16:40|HTTP error looking up 'delimes': 429
+WARNING|2025-05-26T15:16:41|HTTP error looking up 'antevert': 429
+WARNING|2025-05-26T15:16:41|HTTP error looking up 'union': 429
+WARNING|2025-05-26T15:16:41|HTTP error looking up 'preaverred': 429
+WARNING|2025-05-26T15:16:41|HTTP error looking up 'obits': 429
+WARNING|2025-05-26T15:16:42|HTTP error looking up 'insatiate': 429
+WARNING|2025-05-26T15:16:42|HTTP error looking up 'crumping': 429
+WARNING|2025-05-26T15:16:42|HTTP error looking up 'finnicky': 429
+WARNING|2025-05-26T15:16:42|HTTP error looking up 'inanimately': 429
+WARNING|2025-05-26T15:16:42|HTTP error looking up 'misconnect': 429
+WARNING|2025-05-26T15:16:43|HTTP error looking up 'testudines': 429
+INFO|2025-05-26T15:16:43|Successfully found 37 definitions from 200 words checked
+INFO|2025-05-26T15:16:43|Adding definitions to 37 words
+INFO|2025-05-26T15:16:44|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:16:44|Added 37 dictionary definitions
+INFO|2025-05-26T15:16:44|All operations completed successfully
+INFO|2025-05-26T15:20:29|Program interrupted by user
+INFO|2025-05-26T15:20:42|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:20:42|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:20:42|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:20:42|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:20:42|Original dictionary has 172823 words
+INFO|2025-05-26T15:20:42|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:20:42|Loaded 172823 existing words
+INFO|2025-05-26T15:20:42|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:20:42|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:20:42|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:20:42|Downloaded 172823 valid words
+INFO|2025-05-26T15:20:42|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:20:42|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:20:42|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:20:44|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:20:44|XML contains 172823 word elements
+INFO|2025-05-26T15:20:44|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:20:44|Found 172823 words without definitions
+INFO|2025-05-26T15:20:44|Found 0 words already with definitions
+INFO|2025-05-26T15:20:44|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:21:11|Found 25 definitions so far...
+INFO|2025-05-26T15:21:40|Found 50 definitions so far...
+INFO|2025-05-26T15:21:57|Found 75 definitions so far...
+INFO|2025-05-26T15:22:15|Successfully found 97 definitions from 200 words checked
+INFO|2025-05-26T15:22:15|Adding definitions to 97 words
+INFO|2025-05-26T15:22:17|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:22:17|Added 97 dictionary definitions
+INFO|2025-05-26T15:22:17|All operations completed successfully
+INFO|2025-05-26T15:23:08|Program exited by user
+INFO|2025-05-26T15:23:28|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:23:28|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:23:28|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:23:28|Original dictionary has 172823 words
+INFO|2025-05-26T15:23:28|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:23:28|Loaded 172823 existing words
+INFO|2025-05-26T15:23:28|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:23:29|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:23:29|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:23:29|Downloaded 172823 valid words
+INFO|2025-05-26T15:23:29|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:23:35|Program exited by user
+INFO|2025-05-26T15:23:48|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:23:48|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:23:49|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:23:49|XML contains 172823 word elements
+INFO|2025-05-26T15:25:57|Program interrupted by user
+INFO|2025-05-26T15:26:04|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:26:04|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:26:04|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:26:04|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:26:04|Original dictionary has 172823 words
+INFO|2025-05-26T15:26:04|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:26:04|Loaded 172823 existing words
+INFO|2025-05-26T15:26:04|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:26:04|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:26:04|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:26:04|Downloaded 172823 valid words
+INFO|2025-05-26T15:26:04|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:26:04|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:26:04|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:26:05|Found 0 existing definitions to preserve
+INFO|2025-05-26T15:26:06|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:26:06|XML contains 172823 words: 0 with definitions, 172823 without
+INFO|2025-05-26T15:26:06|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:26:06|Found 172823 words without definitions
+INFO|2025-05-26T15:26:06|Found 0 words already with definitions
+INFO|2025-05-26T15:26:06|Looking up definitions for up to 100 words from dictionary API
+WARNING|2025-05-26T15:26:29|Free Dict API HTTP error for 'zydecos': 429
+WARNING|2025-05-26T15:26:29|Free Dict API HTTP error for 'zygapophyses': 429
+WARNING|2025-05-26T15:26:30|Free Dict API HTTP error for 'zygapophysis': 429
+WARNING|2025-05-26T15:26:30|Free Dict API HTTP error for 'zygodactyl': 429
+WARNING|2025-05-26T15:26:31|Free Dict API HTTP error for 'zygodactylous': 429
+WARNING|2025-05-26T15:26:31|Free Dict API HTTP error for 'zygoid': 429
+WARNING|2025-05-26T15:26:32|Free Dict API HTTP error for 'zygoma': 429
+WARNING|2025-05-26T15:26:33|Free Dict API HTTP error for 'zygomas': 429
+WARNING|2025-05-26T15:26:33|Free Dict API HTTP error for 'zygomata': 429
+WARNING|2025-05-26T15:26:34|Free Dict API HTTP error for 'zygomatic': 429
+WARNING|2025-05-26T15:26:34|Free Dict API HTTP error for 'zygomorphic': 429
+WARNING|2025-05-26T15:26:35|Free Dict API HTTP error for 'zygomorphies': 429
+WARNING|2025-05-26T15:26:35|Free Dict API HTTP error for 'zygomorphy': 429
+WARNING|2025-05-26T15:26:36|Free Dict API HTTP error for 'zygose': 429
+WARNING|2025-05-26T15:26:36|Free Dict API HTTP error for 'zygoses': 429
+WARNING|2025-05-26T15:26:37|Free Dict API HTTP error for 'zygosis': 429
+WARNING|2025-05-26T15:26:37|Free Dict API HTTP error for 'zygosities': 429
+WARNING|2025-05-26T15:26:38|Free Dict API HTTP error for 'zygosity': 429
+INFO|2025-05-26T15:26:39|Found 25 definitions so far...
+INFO|2025-05-26T15:27:03|Found 50 definitions so far...
+INFO|2025-05-26T15:27:30|Found 75 definitions so far...
+INFO|2025-05-26T15:27:37|Successfully found 87 definitions from 200 words checked
+INFO|2025-05-26T15:27:37|Adding definitions to 87 words
+INFO|2025-05-26T15:27:38|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:27:38|Added 87 dictionary definitions
+INFO|2025-05-26T15:27:38|All operations completed successfully
+INFO|2025-05-26T15:28:17|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:28:17|Found 172736 words without definitions
+INFO|2025-05-26T15:28:17|Found 87 words already with definitions
+INFO|2025-05-26T15:28:17|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:29:12|Found 25 definitions so far...
+INFO|2025-05-26T15:29:27|Found 50 definitions so far...
+WARNING|2025-05-26T15:29:27|Free Dict API HTTP error for 'render': 429
+WARNING|2025-05-26T15:29:28|Free Dict API HTTP error for 'eyehook': 429
+WARNING|2025-05-26T15:29:28|Free Dict API HTTP error for 'diabolical': 429
+WARNING|2025-05-26T15:29:29|Free Dict API HTTP error for 'leaks': 429
+WARNING|2025-05-26T15:29:29|Free Dict API HTTP error for 'anadem': 429
+WARNING|2025-05-26T15:29:30|Free Dict API HTTP error for 'reeducations': 429
+WARNING|2025-05-26T15:29:30|Free Dict API HTTP error for 'tamarisks': 429
+WARNING|2025-05-26T15:29:31|Free Dict API HTTP error for 'miscomprehension': 429
+WARNING|2025-05-26T15:29:31|Free Dict API HTTP error for 'miggle': 429
+WARNING|2025-05-26T15:29:32|Free Dict API HTTP error for 'dissimilates': 429
+WARNING|2025-05-26T15:29:33|Free Dict API HTTP error for 'communitarian': 429
+WARNING|2025-05-26T15:29:33|Free Dict API HTTP error for 'foams': 429
+WARNING|2025-05-26T15:29:34|Free Dict API HTTP error for 'tambur': 429
+WARNING|2025-05-26T15:29:34|Free Dict API HTTP error for 'conscription': 429
+WARNING|2025-05-26T15:29:35|Free Dict API HTTP error for 'collagenous': 429
+WARNING|2025-05-26T15:29:35|Free Dict API HTTP error for 'staring': 429
+WARNING|2025-05-26T15:29:36|Free Dict API HTTP error for 'chibouks': 429
+WARNING|2025-05-26T15:29:36|Free Dict API HTTP error for 'overexpectations': 429
+WARNING|2025-05-26T15:29:37|Free Dict API HTTP error for 'trebuchet': 429
+INFO|2025-05-26T15:29:52|Successfully found 73 definitions from 200 words checked
+INFO|2025-05-26T15:29:52|Adding definitions to 73 words
+INFO|2025-05-26T15:29:54|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:29:54|Added 73 dictionary definitions
+INFO|2025-05-26T15:32:01|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:32:01|Found 172663 words without definitions
+INFO|2025-05-26T15:32:01|Found 160 words already with definitions
+INFO|2025-05-26T15:32:01|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:33:16|Found 25 definitions so far...
+INFO|2025-05-26T15:33:36|Found 50 definitions so far...
+INFO|2025-05-26T15:33:42|Successfully found 59 definitions from 200 words checked
+INFO|2025-05-26T15:33:42|Adding definitions to 59 words
+INFO|2025-05-26T15:33:44|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:33:44|Added 59 dictionary definitions
+INFO|2025-05-26T15:34:06|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:34:06|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:34:06|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:34:06|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:34:06|Original dictionary has 172823 words
+INFO|2025-05-26T15:34:06|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:34:06|Loaded 172823 existing words
+INFO|2025-05-26T15:34:06|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:34:06|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:34:06|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:34:06|Downloaded 172823 valid words
+INFO|2025-05-26T15:34:06|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:34:06|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:34:06|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:34:06|Found 219 existing definitions to preserve
+INFO|2025-05-26T15:34:08|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:34:08|XML contains 172823 words: 219 with definitions, 172604 without
+INFO|2025-05-26T15:34:08|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:34:09|Found 172604 words without definitions
+INFO|2025-05-26T15:34:09|Found 219 words already with definitions
+INFO|2025-05-26T15:34:09|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:35:25|Found 25 definitions so far...
+INFO|2025-05-26T15:35:48|Found 50 definitions so far...
+INFO|2025-05-26T15:35:50|Successfully found 52 definitions from 200 words checked
+INFO|2025-05-26T15:35:50|Adding definitions to 52 words
+INFO|2025-05-26T15:35:52|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:35:52|Added 52 dictionary definitions
+INFO|2025-05-26T15:35:52|All operations completed successfully
+INFO|2025-05-26T15:37:49|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:37:50|Found 172552 words without definitions
+INFO|2025-05-26T15:37:50|Found 271 words already with definitions
+INFO|2025-05-26T15:37:50|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:39:03|Found 25 definitions so far...
+WARNING|2025-05-26T15:39:15|Free Dict API HTTP error for 'frays': 429
+WARNING|2025-05-26T15:39:16|Free Dict API HTTP error for 'swithers': 429
+WARNING|2025-05-26T15:39:16|Free Dict API HTTP error for 'absorbencies': 429
+WARNING|2025-05-26T15:39:17|Free Dict API HTTP error for 'brews': 429
+WARNING|2025-05-26T15:39:17|Free Dict API HTTP error for 'blowiest': 429
+WARNING|2025-05-26T15:39:18|Free Dict API HTTP error for 'gratinee': 429
+WARNING|2025-05-26T15:39:18|Free Dict API HTTP error for 'zikurat': 429
+WARNING|2025-05-26T15:39:19|Free Dict API HTTP error for 'crinum': 429
+WARNING|2025-05-26T15:39:19|Free Dict API HTTP error for 'unsearchably': 429
+WARNING|2025-05-26T15:39:20|Free Dict API HTTP error for 'methaqualones': 429
+WARNING|2025-05-26T15:39:20|Free Dict API HTTP error for 'geometries': 429
+WARNING|2025-05-26T15:39:21|Free Dict API HTTP error for 'meritoriously': 429
+WARNING|2025-05-26T15:39:21|Free Dict API HTTP error for 'bangtail': 429
+WARNING|2025-05-26T15:39:22|Free Dict API HTTP error for 'homeostasis': 429
+WARNING|2025-05-26T15:39:22|Free Dict API HTTP error for 'moistnesses': 429
+WARNING|2025-05-26T15:39:23|Free Dict API HTTP error for 'acetylcholinesterase': 429
+WARNING|2025-05-26T15:39:23|Free Dict API HTTP error for 'cutup': 429
+WARNING|2025-05-26T15:39:24|Free Dict API HTTP error for 'anaglyphic': 429
+INFO|2025-05-26T15:39:29|Successfully found 49 definitions from 200 words checked
+INFO|2025-05-26T15:39:29|Adding definitions to 49 words
+INFO|2025-05-26T15:39:31|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:39:31|Added 49 dictionary definitions
+INFO|2025-05-26T15:43:04|Program exited by user
+INFO|2025-05-26T15:44:35|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:44:35|Found 172503 words without definitions
+INFO|2025-05-26T15:44:35|Found 320 words already with definitions
+INFO|2025-05-26T15:44:35|Looking up definitions for up to 100 words from dictionary API
+WARNING|2025-05-26T15:44:36|WordsAPI HTTP error for 'zoogenic': 403
+WARNING|2025-05-26T15:44:37|WordsAPI HTTP error for 'zoogeographer': 429
+WARNING|2025-05-26T15:44:37|WordsAPI HTTP error for 'zoogeographers': 429
+WARNING|2025-05-26T15:44:38|WordsAPI HTTP error for 'zoogeographic': 429
+WARNING|2025-05-26T15:44:39|WordsAPI HTTP error for 'zoogeographical': 403
+WARNING|2025-05-26T15:44:40|WordsAPI HTTP error for 'zoogeographically': 429
+WARNING|2025-05-26T15:44:41|WordsAPI HTTP error for 'zoogeographies': 429
+WARNING|2025-05-26T15:44:42|WordsAPI HTTP error for 'zooglea': 429
+WARNING|2025-05-26T15:44:42|WordsAPI HTTP error for 'zoogleae': 403
+WARNING|2025-05-26T15:44:43|WordsAPI HTTP error for 'zoogleal': 429
+WARNING|2025-05-26T15:44:44|WordsAPI HTTP error for 'zoogleas': 429
+WARNING|2025-05-26T15:44:45|WordsAPI HTTP error for 'zoogloea': 429
+WARNING|2025-05-26T15:44:46|WordsAPI HTTP error for 'zoogloeae': 403
+WARNING|2025-05-26T15:44:47|WordsAPI HTTP error for 'zoogloeas': 429
+WARNING|2025-05-26T15:44:47|WordsAPI HTTP error for 'zooidal': 429
+WARNING|2025-05-26T15:44:48|WordsAPI HTTP error for 'zooks': 429
+WARNING|2025-05-26T15:44:49|WordsAPI HTTP error for 'zoolater': 403
+WARNING|2025-05-26T15:44:50|WordsAPI HTTP error for 'zoolaters': 429
+WARNING|2025-05-26T15:44:51|WordsAPI HTTP error for 'zoolatries': 429
+WARNING|2025-05-26T15:44:51|WordsAPI HTTP error for 'zoologic': 429
+WARNING|2025-05-26T15:44:52|WordsAPI HTTP error for 'zoologically': 403
+WARNING|2025-05-26T15:44:53|WordsAPI HTTP error for 'zoologies': 429
+WARNING|2025-05-26T15:44:54|WordsAPI HTTP error for 'zoomania': 429
+WARNING|2025-05-26T15:44:55|WordsAPI HTTP error for 'zoomanias': 429
+WARNING|2025-05-26T15:44:56|WordsAPI HTTP error for 'zoometries': 403
+WARNING|2025-05-26T15:44:56|WordsAPI HTTP error for 'zoometry': 429
+WARNING|2025-05-26T15:44:57|WordsAPI HTTP error for 'zoomorph': 429
+WARNING|2025-05-26T15:44:58|WordsAPI HTTP error for 'zoomorphs': 429
+WARNING|2025-05-26T15:44:59|WordsAPI HTTP error for 'zoon': 403
+WARNING|2025-05-26T15:45:00|WordsAPI HTTP error for 'zoonal': 429
+WARNING|2025-05-26T15:45:00|WordsAPI HTTP error for 'zoonotic': 429
+WARNING|2025-05-26T15:45:01|WordsAPI HTTP error for 'zoons': 429
+WARNING|2025-05-26T15:45:02|WordsAPI HTTP error for 'zoophilic': 403
+WARNING|2025-05-26T15:45:03|WordsAPI HTTP error for 'zoophilies': 429
+WARNING|2025-05-26T15:45:04|WordsAPI HTTP error for 'zoophilous': 429
+WARNING|2025-05-26T15:45:05|WordsAPI HTTP error for 'zoophily': 429
+WARNING|2025-05-26T15:45:06|WordsAPI HTTP error for 'zoophobe': 403
+WARNING|2025-05-26T15:45:06|WordsAPI HTTP error for 'zoophobes': 429
+WARNING|2025-05-26T15:45:07|WordsAPI HTTP error for 'zooplankter': 429
+WARNING|2025-05-26T15:45:08|WordsAPI HTTP error for 'zooplankters': 429
+WARNING|2025-05-26T15:45:09|WordsAPI HTTP error for 'zooplanktonic': 403
+WARNING|2025-05-26T15:45:10|WordsAPI HTTP error for 'zooplanktons': 429
+WARNING|2025-05-26T15:45:10|WordsAPI HTTP error for 'zoosperm': 429
+WARNING|2025-05-26T15:45:11|WordsAPI HTTP error for 'zoosperms': 429
+WARNING|2025-05-26T15:45:12|WordsAPI HTTP error for 'zoosporangia': 403
+WARNING|2025-05-26T15:45:13|WordsAPI HTTP error for 'zoosporangium': 429
+WARNING|2025-05-26T15:45:14|WordsAPI HTTP error for 'zoosporic': 429
+WARNING|2025-05-26T15:45:14|WordsAPI HTTP error for 'zoosterol': 429
+WARNING|2025-05-26T15:45:15|WordsAPI HTTP error for 'zoosterols': 403
+WARNING|2025-05-26T15:45:16|WordsAPI HTTP error for 'zootechnical': 429
+WARNING|2025-05-26T15:45:17|WordsAPI HTTP error for 'zootechnics': 429
+WARNING|2025-05-26T15:45:18|WordsAPI HTTP error for 'zootier': 429
+WARNING|2025-05-26T15:45:19|WordsAPI HTTP error for 'zootiest': 403
+WARNING|2025-05-26T15:45:19|WordsAPI HTTP error for 'zootomic': 429
+WARNING|2025-05-26T15:45:20|WordsAPI HTTP error for 'zooty': 429
+WARNING|2025-05-26T15:45:21|WordsAPI HTTP error for 'zoril': 429
+WARNING|2025-05-26T15:45:22|WordsAPI HTTP error for 'zorille': 403
+WARNING|2025-05-26T15:45:23|WordsAPI HTTP error for 'zorilles': 429
+WARNING|2025-05-26T15:45:24|WordsAPI HTTP error for 'zorillo': 429
+WARNING|2025-05-26T15:45:24|WordsAPI HTTP error for 'zorillos': 429
+WARNING|2025-05-26T15:45:25|WordsAPI HTTP error for 'zorils': 403
+WARNING|2025-05-26T15:45:26|WordsAPI HTTP error for 'zoster': 429
+WARNING|2025-05-26T15:45:27|WordsAPI HTTP error for 'zosters': 429
+WARNING|2025-05-26T15:45:28|WordsAPI HTTP error for 'zouave': 429
+WARNING|2025-05-26T15:45:29|WordsAPI HTTP error for 'zouaves': 403
+WARNING|2025-05-26T15:45:29|WordsAPI HTTP error for 'zoysia': 429
+WARNING|2025-05-26T15:45:30|WordsAPI HTTP error for 'zoysias': 429
+WARNING|2025-05-26T15:45:31|WordsAPI HTTP error for 'zwitterionic': 429
+WARNING|2025-05-26T15:45:32|WordsAPI HTTP error for 'zydecos': 403
+WARNING|2025-05-26T15:45:33|WordsAPI HTTP error for 'zygapophyses': 429
+WARNING|2025-05-26T15:45:33|WordsAPI HTTP error for 'zygapophysis': 429
+WARNING|2025-05-26T15:45:34|WordsAPI HTTP error for 'zygodactylous': 429
+WARNING|2025-05-26T15:45:35|WordsAPI HTTP error for 'zygoid': 403
+WARNING|2025-05-26T15:45:36|WordsAPI HTTP error for 'zygomas': 429
+WARNING|2025-05-26T15:45:37|WordsAPI HTTP error for 'zygomatic': 429
+WARNING|2025-05-26T15:45:37|WordsAPI HTTP error for 'zygomorphies': 429
+WARNING|2025-05-26T15:45:38|WordsAPI HTTP error for 'zygomorphy': 403
+WARNING|2025-05-26T15:45:39|WordsAPI HTTP error for 'zygose': 429
+WARNING|2025-05-26T15:45:40|WordsAPI HTTP error for 'zygoses': 429
+WARNING|2025-05-26T15:45:41|WordsAPI HTTP error for 'zygosis': 429
+WARNING|2025-05-26T15:45:42|WordsAPI HTTP error for 'zygosities': 403
+WARNING|2025-05-26T15:45:42|WordsAPI HTTP error for 'zygosity': 429
+WARNING|2025-05-26T15:45:43|WordsAPI HTTP error for 'zygotenes': 429
+WARNING|2025-05-26T15:45:44|WordsAPI HTTP error for 'zygotic': 429
+WARNING|2025-05-26T15:45:45|WordsAPI HTTP error for 'zymases': 403
+WARNING|2025-05-26T15:45:46|WordsAPI HTTP error for 'zyme': 429
+WARNING|2025-05-26T15:45:46|WordsAPI HTTP error for 'zymes': 429
+WARNING|2025-05-26T15:45:47|WordsAPI HTTP error for 'zymogene': 429
+WARNING|2025-05-26T15:45:48|WordsAPI HTTP error for 'zymogenes': 403
+WARNING|2025-05-26T15:45:49|WordsAPI HTTP error for 'zymogram': 429
+WARNING|2025-05-26T15:45:50|WordsAPI HTTP error for 'zymograms': 429
+WARNING|2025-05-26T15:45:50|WordsAPI HTTP error for 'zymologies': 429
+WARNING|2025-05-26T15:45:51|WordsAPI HTTP error for 'zymology': 403
+WARNING|2025-05-26T15:45:52|WordsAPI HTTP error for 'zymosan': 429
+WARNING|2025-05-26T15:45:53|WordsAPI HTTP error for 'zymosans': 429
+WARNING|2025-05-26T15:45:54|WordsAPI HTTP error for 'zymoses': 429
+WARNING|2025-05-26T15:45:55|WordsAPI HTTP error for 'zymosis': 403
+WARNING|2025-05-26T15:45:56|WordsAPI HTTP error for 'zymurgies': 429
+WARNING|2025-05-26T15:45:57|WordsAPI HTTP error for 'zyzzyva': 429
+WARNING|2025-05-26T15:45:58|WordsAPI HTTP error for 'zyzzyvas': 403
+WARNING|2025-05-26T15:45:59|WordsAPI HTTP error for 'isoglossal': 429
+WARNING|2025-05-26T15:46:01|WordsAPI HTTP error for 'lampblacks': 429
+WARNING|2025-05-26T15:46:02|WordsAPI HTTP error for 'gypper': 403
+WARNING|2025-05-26T15:46:04|WordsAPI HTTP error for 'recharts': 429
+WARNING|2025-05-26T15:46:06|WordsAPI HTTP error for 'classicality': 403
+WARNING|2025-05-26T15:46:08|WordsAPI HTTP error for 'offcasts': 429
+WARNING|2025-05-26T15:46:09|WordsAPI HTTP error for 'jawboner': 429
+WARNING|2025-05-26T15:46:10|WordsAPI HTTP error for 'photodisintegrating': 403
+WARNING|2025-05-26T15:46:11|WordsAPI HTTP error for 'legaleses': 429
+WARNING|2025-05-26T15:46:13|WordsAPI HTTP error for 'bibliothecal': 403
+WARNING|2025-05-26T15:46:15|WordsAPI HTTP error for 'guardednesses': 429
+INFO|2025-05-26T15:46:16|Found 25 definitions so far...
+WARNING|2025-05-26T15:46:18|WordsAPI HTTP error for 'organology': 403
+WARNING|2025-05-26T15:46:19|WordsAPI HTTP error for 'ribbiest': 429
+WARNING|2025-05-26T15:46:20|WordsAPI HTTP error for 'luftmenschen': 429
+WARNING|2025-05-26T15:46:21|WordsAPI HTTP error for 'methylals': 403
+WARNING|2025-05-26T15:46:22|WordsAPI HTTP error for 'posterities': 429
+WARNING|2025-05-26T15:46:23|WordsAPI HTTP error for 'shipfitter': 429
+WARNING|2025-05-26T15:46:24|WordsAPI HTTP error for 'lavrocks': 403
+WARNING|2025-05-26T15:46:26|WordsAPI HTTP error for 'labiated': 429
+WARNING|2025-05-26T15:46:28|WordsAPI HTTP error for 'leishmaniases': 403
+WARNING|2025-05-26T15:46:29|WordsAPI HTTP error for 'bioherms': 429
+WARNING|2025-05-26T15:46:32|WordsAPI HTTP error for 'lapsus': 403
+WARNING|2025-05-26T15:46:33|WordsAPI HTTP error for 'cowpoxes': 429
+WARNING|2025-05-26T15:46:34|WordsAPI HTTP error for 'interepidemic': 429
+WARNING|2025-05-26T15:46:35|WordsAPI HTTP error for 'fifers': 429
+WARNING|2025-05-26T15:46:36|WordsAPI HTTP error for 'springalds': 403
+WARNING|2025-05-26T15:46:37|WordsAPI HTTP error for 'douser': 429
+WARNING|2025-05-26T15:46:38|WordsAPI HTTP error for 'fellowmen': 429
+WARNING|2025-05-26T15:46:39|WordsAPI HTTP error for 'kinetins': 403
+WARNING|2025-05-26T15:46:40|WordsAPI HTTP error for 'celebrators': 429
+WARNING|2025-05-26T15:46:41|WordsAPI HTTP error for 'jolter': 429
+WARNING|2025-05-26T15:46:43|WordsAPI HTTP error for 'heister': 403
+WARNING|2025-05-26T15:46:44|WordsAPI HTTP error for 'paratactically': 429
+WARNING|2025-05-26T15:46:45|WordsAPI HTTP error for 'telphered': 429
+INFO|2025-05-26T15:46:46|Found 50 definitions so far...
+WARNING|2025-05-26T15:46:47|WordsAPI HTTP error for 'requestor': 403
+WARNING|2025-05-26T15:46:48|WordsAPI HTTP error for 'outpassed': 429
+WARNING|2025-05-26T15:46:51|WordsAPI HTTP error for 'oologists': 403
+WARNING|2025-05-26T15:46:52|WordsAPI HTTP error for 'elater': 429
+WARNING|2025-05-26T15:46:53|WordsAPI HTTP error for 'trimeric': 429
+WARNING|2025-05-26T15:46:54|WordsAPI HTTP error for 'twibils': 403
+WARNING|2025-05-26T15:46:55|WordsAPI HTTP error for 'upthrusting': 429
+WARNING|2025-05-26T15:46:56|WordsAPI HTTP error for 'depoliticizations': 429
+INFO|2025-05-26T15:46:56|Successfully found 58 definitions from 200 words checked
+INFO|2025-05-26T15:46:56|Adding definitions to 58 words
+INFO|2025-05-26T15:46:58|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:46:58|Added 58 dictionary definitions
+INFO|2025-05-26T15:51:28|Program exited by user
+INFO|2025-05-26T15:51:38|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:51:38|Found 172445 words without definitions
+INFO|2025-05-26T15:51:38|Found 378 words already with definitions
+INFO|2025-05-26T15:51:38|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T15:53:02|Found 25 definitions so far...
+INFO|2025-05-26T15:53:24|Found 50 definitions so far...
+INFO|2025-05-26T15:53:39|Found 75 definitions so far...
+INFO|2025-05-26T15:53:57|Successfully found 92 definitions from 200 words checked
+INFO|2025-05-26T15:53:57|Adding definitions to 92 words
+INFO|2025-05-26T15:53:58|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:53:58|Added 92 dictionary definitions
+INFO|2025-05-26T15:55:07|Program exited by user
+INFO|2025-05-26T15:59:34|=== RUNNING ALL OPERATIONS ===
+INFO|2025-05-26T15:59:34|=== FETCH WORDS OPERATION ===
+INFO|2025-05-26T15:59:34|Working directory: C:\Code\game-dictionary
+INFO|2025-05-26T15:59:34|Dictionary path: C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:59:34|Original dictionary has 172823 words
+INFO|2025-05-26T15:59:34|Backup created: C:\Code\game-dictionary\data\words_backup.txt
+INFO|2025-05-26T15:59:34|Loaded 172823 existing words
+INFO|2025-05-26T15:59:34|Downloading from https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt (attempt 1/3)
+INFO|2025-05-26T15:59:35|PROGRESS|100%|1743363/1743363 bytes
+INFO|2025-05-26T15:59:35|Download successful|1743363 bytes in 0.2s
+INFO|2025-05-26T15:59:35|Downloaded 172823 valid words
+INFO|2025-05-26T15:59:35|Dictionary is up to date (identical content)
+INFO|2025-05-26T15:59:35|=== CONVERT TO XML OPERATION ===
+INFO|2025-05-26T15:59:35|Loaded 172823 words from C:\Code\game-dictionary\data\words.txt
+INFO|2025-05-26T15:59:35|Found 467 existing definitions to preserve
+INFO|2025-05-26T15:59:36|Successfully created C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T15:59:36|XML contains 172823 words: 467 with definitions, 172356 without
+INFO|2025-05-26T15:59:36|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T15:59:37|Found 172356 words without definitions
+INFO|2025-05-26T15:59:37|Found 467 words already with definitions
+INFO|2025-05-26T15:59:37|Looking up definitions for up to 100 words from dictionary API
+INFO|2025-05-26T16:01:10|Found 25 definitions so far...
+INFO|2025-05-26T16:01:28|Found 50 definitions so far...
+INFO|2025-05-26T16:01:48|Found 75 definitions so far...
+INFO|2025-05-26T16:01:55|Successfully found 85 definitions from 200 words checked
+INFO|2025-05-26T16:01:55|Adding definitions to 85 words
+INFO|2025-05-26T16:01:56|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T16:01:56|Added 85 dictionary definitions
+INFO|2025-05-26T16:01:56|All operations completed successfully
+INFO|2025-05-26T16:02:03|Program exited by user
+INFO|2025-05-26T16:09:21|Program exited by user
