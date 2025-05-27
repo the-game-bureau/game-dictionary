@@ -547,3 +547,96 @@ INFO|2025-05-26T16:01:56|All operations completed successfully
 INFO|2025-05-26T16:02:03|Program exited by user
 INFO|2025-05-26T16:09:21|Program exited by user
 INFO|2025-05-26T16:31:15|Program exited by user
+INFO|2025-05-26T17:15:41|=== ADD DEFINITIONS OPERATION ===
+INFO|2025-05-26T17:15:41|Found 172271 words without definitions
+INFO|2025-05-26T17:15:41|Found 552 words already with definitions
+INFO|2025-05-26T17:15:41|Looking up definitions for up to 100 words from dictionary API
+WARNING|2025-05-26T17:15:50|Free Dict API HTTP error for 'abacterial': 429
+WARNING|2025-05-26T17:15:51|Free Dict API HTTP error for 'abacus': 429
+WARNING|2025-05-26T17:15:51|Free Dict API HTTP error for 'abacuses': 429
+WARNING|2025-05-26T17:15:52|Free Dict API HTTP error for 'abaft': 429
+WARNING|2025-05-26T17:15:52|Free Dict API HTTP error for 'abaka': 429
+WARNING|2025-05-26T17:15:53|Free Dict API HTTP error for 'abakas': 429
+WARNING|2025-05-26T17:15:53|Free Dict API HTTP error for 'abalone': 429
+WARNING|2025-05-26T17:15:54|Free Dict API HTTP error for 'abalones': 429
+WARNING|2025-05-26T17:15:54|Free Dict API HTTP error for 'abamp': 429
+WARNING|2025-05-26T17:15:55|Free Dict API HTTP error for 'abampere': 429
+WARNING|2025-05-26T17:15:55|Free Dict API HTTP error for 'abamperes': 429
+WARNING|2025-05-26T17:15:56|Free Dict API HTTP error for 'abamps': 429
+WARNING|2025-05-26T17:15:56|Free Dict API HTTP error for 'abandon': 429
+WARNING|2025-05-26T17:15:57|Free Dict API HTTP error for 'abandoned': 429
+WARNING|2025-05-26T17:15:57|Free Dict API HTTP error for 'abandoner': 429
+WARNING|2025-05-26T17:15:58|Free Dict API HTTP error for 'abandoners': 429
+WARNING|2025-05-26T17:15:58|Free Dict API HTTP error for 'abandoning': 429
+WARNING|2025-05-26T17:15:59|Free Dict API HTTP error for 'abandonment': 429
+WARNING|2025-05-26T17:15:59|Free Dict API HTTP error for 'abandonments': 429
+INFO|2025-05-26T17:16:09|Found 25 definitions so far...
+WARNING|2025-05-26T17:16:18|Free Dict API HTTP error for 'abbess': 429
+WARNING|2025-05-26T17:16:19|Free Dict API HTTP error for 'abbesses': 429
+WARNING|2025-05-26T17:16:19|Free Dict API HTTP error for 'abbey': 429
+WARNING|2025-05-26T17:16:20|Free Dict API HTTP error for 'abbeys': 429
+WARNING|2025-05-26T17:16:20|Free Dict API HTTP error for 'abbot': 429
+WARNING|2025-05-26T17:16:21|Free Dict API HTTP error for 'abbotcies': 429
+WARNING|2025-05-26T17:16:21|Free Dict API HTTP error for 'abbotcy': 429
+WARNING|2025-05-26T17:16:22|Free Dict API HTTP error for 'abbots': 429
+WARNING|2025-05-26T17:16:22|Free Dict API HTTP error for 'abbreviate': 429
+WARNING|2025-05-26T17:16:23|Free Dict API HTTP error for 'abbreviated': 429
+WARNING|2025-05-26T17:16:23|Free Dict API HTTP error for 'zonally': 429
+WARNING|2025-05-26T17:16:24|Free Dict API HTTP error for 'zonary': 429
+WARNING|2025-05-26T17:16:24|Free Dict API HTTP error for 'zonate': 429
+WARNING|2025-05-26T17:16:25|Free Dict API HTTP error for 'zonated': 429
+WARNING|2025-05-26T17:16:25|Free Dict API HTTP error for 'zonation': 429
+WARNING|2025-05-26T17:16:26|Free Dict API HTTP error for 'zonations': 429
+WARNING|2025-05-26T17:16:26|Free Dict API HTTP error for 'zone': 429
+WARNING|2025-05-26T17:16:27|Free Dict API HTTP error for 'zoned': 429
+WARNING|2025-05-26T17:16:27|Free Dict API HTTP error for 'zoneless': 429
+WARNING|2025-05-26T17:16:28|Free Dict API HTTP error for 'zoner': 429
+INFO|2025-05-26T17:17:20|Found 50 definitions so far...
+WARNING|2025-05-26T17:17:31|Free Dict API HTTP error for 'monsoon': 429
+WARNING|2025-05-26T17:17:32|Free Dict API HTTP error for 'staff': 429
+WARNING|2025-05-26T17:17:32|Free Dict API HTTP error for 'moveably': 429
+WARNING|2025-05-26T17:17:33|Free Dict API HTTP error for 'girdle': 429
+WARNING|2025-05-26T17:17:33|Free Dict API HTTP error for 'streetscape': 429
+WARNING|2025-05-26T17:17:34|Free Dict API HTTP error for 'backstitched': 429
+WARNING|2025-05-26T17:17:34|Free Dict API HTTP error for 'brionies': 429
+WARNING|2025-05-26T17:17:35|Free Dict API HTTP error for 'kurta': 429
+WARNING|2025-05-26T17:17:35|Free Dict API HTTP error for 'genuflects': 429
+WARNING|2025-05-26T17:17:36|Free Dict API HTTP error for 'fills': 429
+WARNING|2025-05-26T17:17:36|Free Dict API HTTP error for 'rhizobia': 429
+WARNING|2025-05-26T17:17:37|Free Dict API HTTP error for 'tetanus': 429
+WARNING|2025-05-26T17:17:37|Free Dict API HTTP error for 'gratitude': 429
+WARNING|2025-05-26T17:17:38|Free Dict API HTTP error for 'prescoring': 429
+WARNING|2025-05-26T17:17:38|Free Dict API HTTP error for 'shadings': 429
+WARNING|2025-05-26T17:17:39|Free Dict API HTTP error for 'footslogs': 429
+WARNING|2025-05-26T17:17:39|Free Dict API HTTP error for 'thumbkin': 429
+WARNING|2025-05-26T17:17:40|Free Dict API HTTP error for 'protuberance': 429
+WARNING|2025-05-26T17:17:40|Free Dict API HTTP error for 'unhallow': 429
+WARNING|2025-05-26T17:17:40|Free Dict API HTTP error for 'player': 429
+WARNING|2025-05-26T17:17:41|Free Dict API HTTP error for 'habituation': 429
+INFO|2025-05-26T17:17:51|Found 75 definitions so far...
+WARNING|2025-05-26T17:18:00|Free Dict API HTTP error for 'audiologists': 429
+WARNING|2025-05-26T17:18:00|Free Dict API HTTP error for 'alternately': 429
+WARNING|2025-05-26T17:18:01|Free Dict API HTTP error for 'anxiousness': 429
+WARNING|2025-05-26T17:18:01|Free Dict API HTTP error for 'linter': 429
+WARNING|2025-05-26T17:18:02|Free Dict API HTTP error for 'inthral': 429
+WARNING|2025-05-26T17:18:02|Free Dict API HTTP error for 'beers': 429
+WARNING|2025-05-26T17:18:03|Free Dict API HTTP error for 'yahooisms': 429
+WARNING|2025-05-26T17:18:03|Free Dict API HTTP error for 'pertinence': 429
+WARNING|2025-05-26T17:18:04|Free Dict API HTTP error for 'pressurizer': 429
+WARNING|2025-05-26T17:18:04|Free Dict API HTTP error for 'publicity': 429
+WARNING|2025-05-26T17:18:05|Free Dict API HTTP error for 'secede': 429
+WARNING|2025-05-26T17:18:05|Free Dict API HTTP error for 'spinthariscopes': 429
+WARNING|2025-05-26T17:18:06|Free Dict API HTTP error for 'roseslug': 429
+WARNING|2025-05-26T17:18:06|Free Dict API HTTP error for 'megapodes': 429
+WARNING|2025-05-26T17:18:07|Free Dict API HTTP error for 'camorristi': 429
+WARNING|2025-05-26T17:18:07|Free Dict API HTTP error for 'precasting': 429
+WARNING|2025-05-26T17:18:08|Free Dict API HTTP error for 'roughrider': 429
+WARNING|2025-05-26T17:18:08|Free Dict API HTTP error for 'photoproductions': 429
+WARNING|2025-05-26T17:18:09|Free Dict API HTTP error for 'inebrieties': 429
+WARNING|2025-05-26T17:18:09|Free Dict API HTTP error for 'qualifiable': 429
+INFO|2025-05-26T17:18:18|Found 100 definitions so far...
+INFO|2025-05-26T17:18:18|Successfully found 100 definitions from 353 words checked
+INFO|2025-05-26T17:18:18|Adding definitions to 100 words
+INFO|2025-05-26T17:18:20|Successfully updated C:\Code\game-dictionary\data\dictionary.xml
+INFO|2025-05-26T17:18:20|Added 100 dictionary definitions
+INFO|2025-05-26T17:18:24|Program exited by user

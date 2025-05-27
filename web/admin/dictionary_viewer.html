@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-group {
+            margin-bottom: 20px;
+        }
+
+        .file-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #4facfe;
+            border-radius: 12px;
+            background: rgba(79, 172, 254, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
+        }
+
+        .search-group {
+            position: relative;
+        }
+
+        .search-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .stats {
+            padding: 20px 30px;
+            background: rgba(79, 172, 254, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            color: #333;
+        }
+
+        .dictionary-content {
+            padding: 30px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .word-entry {
+            background: white;
+            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #4facfe;
+            transition: all 0.3s ease;
+        }
+
+        .word-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .word-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pos-tag {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .definition {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .no-definition {
+            color: #999;
+            font-style: italic;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #4facfe;
+        }
+
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+
+        .page-btn:hover {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .page-btn.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .page-dots {
+            color: #666;
+            padding: 0 8px;
+            font-weight: bold;
+        }
+
+        .page-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+
+        .words-container {
+            margin: 20px 0;
+        }
+
+        .filter-group {
+            margin-top: 15px;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            user-select: none;
+        }
+
+        .toggle-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-label input[type="checkbox"]:checked + .toggle-slider {
+            background: #4facfe;
+        }
+
+        .toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label:hover .toggle-slider {
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls, .dictionary-content {
+                padding: 20px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .word-text {
+                font-size: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Dictionary Viewer</h1>
+            <p>Load and explore dictionary entries with powerful search</p>
+        </div>
+
+        <div class="controls">
+            <div class="file-input-group">
+                <label for="fileInput">Load Dictionary File:</label>
+                <input type="file" id="fileInput" accept=".xml,.txt" />
+            </div>
+            
+            <div class="search-group">
+                <label for="searchInput">Search Words:</label>
+                <input type="text" id="searchInput" placeholder="Type to search words..." />
+            </div>
+            
+            <div class="filter-group">
+                <label class="toggle-label">
+                    <input type="checkbox" id="definitionsOnly" />
+                    <span class="toggle-slider"></span>
+                    Show only words with definitions
+                </label>
+            </div>
+            
+            <div class="filter-group">
+                <label class="toggle-label">
+                    <input type="checkbox" id="shortWordsOnly" />
+                    <span class="toggle-slider"></span>
+                    Show only short words (2-5 letters)
+                </label>
+            </div>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-item">
+                <span id="totalWords">0</span> Total Words
+            </div>
+            <div class="stat-item">
+                <span id="withDefinitions">0</span> With Definitions
+            </div>
+            <div class="stat-item">
+                <span id="filteredCount">0</span> Showing
+            </div>
+        </div>
+
+        <div class="dictionary-content" id="content">
+            <div class="loading">
+                📖 Load a dictionary file to get started
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DictionaryViewer {
+            constructor() {
+                this.words = [];
+                this.filteredWords = [];
+                this.currentPage = 1;
+                this.wordsPerPage = 100;
+                this.showDefinitionsOnly = false;
+                this.showShortWordsOnly = false;
+                this.searchQuery = '';
+                this.init();
+            }
+
+            init() {
+                document.getElementById('fileInput').addEventListener('change', (e) => this.handleFile(e));
+                document.getElementById('searchInput').addEventListener('input', (e) => this.handleSearch(e));
+                document.getElementById('definitionsOnly').addEventListener('change', (e) => this.handleDefinitionsToggle(e));
+                document.getElementById('shortWordsOnly').addEventListener('change', (e) => this.handleShortWordsToggle(e));
+                
+                // Try to load from dictionary folder on page load
+                this.tryLoadFromFolder();
+            }
+
+            async tryLoadFromFolder() {
+                const possiblePaths = [
+                    'data/dictionary.xml',
+                    '../data/dictionary.xml',
+                    '../../data/dictionary.xml',
+                    '../../../data/dictionary.xml'
+                ];
+
+                for (const path of possiblePaths) {
+                    try {
+                        const response = await fetch(path);
+                        if (response.ok) {
+                            const text = await response.text();
+                            this.parseContent(text);
+                            this.showMessage(`Loaded dictionary from: ${path}`, 'success');
+                            return;
+                        }
+                    } catch (error) {
+                        // Continue trying other paths
+                    }
+                }
+            }
+
+            async handleFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                this.showLoading('Loading dictionary...');
+
+                try {
+                    const text = await file.text();
+                    this.parseContent(text);
+                    this.showMessage(`Successfully loaded ${file.name}`, 'success');
+                } catch (error) {
+                    this.showError(`Error reading file: ${error.message}`);
+                }
+            }
+
+            parseContent(content) {
+                this.words = [];
+                
+                if (content.includes('<word>')) {
+                    // XML-like format
+                    this.parseXMLFormat(content);
+                } else {
+                    // Try to parse as plain text or other formats
+                    this.parseTextFormat(content);
+                }
+
+                this.filteredWords = [...this.words];
+                this.currentPage = 1;
+                this.searchQuery = '';
+                this.showDefinitionsOnly = false;
+                this.showShortWordsOnly = false;
+                document.getElementById('searchInput').value = '';
+                document.getElementById('definitionsOnly').checked = false;
+                document.getElementById('shortWordsOnly').checked = false;
+                this.updateStats();
+                this.renderWords();
+            }
+
+            parseXMLFormat(content) {
+                // Extract word entries - handle both self-closing and regular word tags
+                const wordRegex = /<word[^>]*?(?:\s*\/>|>([\s\S]*?)<\/word>)/g;
+                let match;
+
+                while ((match = wordRegex.exec(content)) !== null) {
+                    const fullMatch = match[0];
+                    const innerContent = match[1] || '';
+                    
+                    const word = this.extractWordData(fullMatch, innerContent);
+                    if (word && word.text) {
+                        this.words.push(word);
+                    }
+                }
+            }
+
+            extractWordData(fullMatch, innerContent) {
+                const word = { text: '', definition: '', pos: '' };
+
+                // Handle self-closing tags like <word>zymosan</word> or <word>text</word>
+                if (fullMatch.includes('</word>') && !fullMatch.includes('<text>')) {
+                    const simpleTextMatch = fullMatch.match(/<word[^>]*>([^<]+)<\/word>/);
+                    if (simpleTextMatch) {
+                        word.text = simpleTextMatch[1].trim();
+                        return word;
+                    }
+                }
+
+                // Handle self-closing tags like <word>text</word> where text is just the word
+                const directTextMatch = fullMatch.match(/<word[^>]*>([^<]+)<\/word>/);
+                if (directTextMatch && !fullMatch.includes('<text>') && !fullMatch.includes('<definition>')) {
+                    word.text = directTextMatch[1].trim();
+                    return word;
+                }
+
+                // Extract text from <text> tags
+                const textMatch = fullMatch.match(/<text>(.*?)<\/text>/s);
+                if (textMatch) {
+                    word.text = textMatch[1].trim();
+                }
+
+                // Extract definition
+                const defMatch = fullMatch.match(/<definition>(.*?)<\/definition>/s);
+                if (defMatch) {
+                    word.definition = defMatch[1].trim();
+                }
+
+                // Extract part of speech
+                const posMatch = fullMatch.match(/<pos>(.*?)<\/pos>/s);
+                if (posMatch) {
+                    word.pos = posMatch[1].trim();
+                }
+
+                // If no text found in tags, try to extract from simple word content
+                if (!word.text && innerContent.trim() && !innerContent.includes('<')) {
+                    word.text = innerContent.trim();
+                }
+
+                return word.text ? word : null;
+            }
+
+            parseTextFormat(content) {
+                const lines = content.split('\n');
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (trimmed) {
+                        this.words.push({
+                            text: trimmed,
+                            definition: '',
+                            pos: ''
+                        });
+                    }
+                }
+            }
+
+            handleSearch(event) {
+                this.searchQuery = event.target.value.toLowerCase().trim();
+                this.applyFilters();
+            }
+
+            handleDefinitionsToggle(event) {
+                this.showDefinitionsOnly = event.target.checked;
+                this.applyFilters();
+            }
+
+            handleShortWordsToggle(event) {
+                this.showShortWordsOnly = event.target.checked;
+                this.applyFilters();
+            }
+
+            applyFilters() {
+                let filtered = [...this.words];
+
+                // Apply search filter
+                if (this.searchQuery) {
+                    filtered = filtered.filter(word =>
+                        word.text.toLowerCase().includes(this.searchQuery) ||
+                        word.definition.toLowerCase().includes(this.searchQuery)
+                    );
+                }
+
+                // Apply definitions-only filter
+                if (this.showDefinitionsOnly) {
+                    filtered = filtered.filter(word => word.definition && word.definition.trim());
+                }
+
+                // Apply short words filter (2-5 characters)
+                if (this.showShortWordsOnly) {
+                    filtered = filtered.filter(word => {
+                        const length = word.text.length;
+                        return length >= 2 && length <= 5;
+                    });
+                }
+
+                this.filteredWords = filtered;
+                this.currentPage = 1; // Reset to first page when filters change
+                this.updateStats();
+                this.renderWords();
+            }
+
+            updateStats() {
+                const totalWords = this.words.length;
+                const withDefinitions = this.words.filter(w => w.definition).length;
+                const filteredCount = this.filteredWords.length;
+
+                document.getElementById('totalWords').textContent = totalWords;
+                document.getElementById('withDefinitions').textContent = withDefinitions;
+                document.getElementById('filteredCount').textContent = filteredCount;
+                document.getElementById('stats').style.display = totalWords > 0 ? 'flex' : 'none';
+            }
+
+            getPaginatedWords() {
+                const startIndex = (this.currentPage - 1) * this.wordsPerPage;
+                const endIndex = startIndex + this.wordsPerPage;
+                return this.filteredWords.slice(startIndex, endIndex);
+            }
+
+            getTotalPages() {
+                return Math.ceil(this.filteredWords.length / this.wordsPerPage);
+            }
+
+            goToPage(page) {
+                const totalPages = this.getTotalPages();
+                if (page >= 1 && page <= totalPages) {
+                    this.currentPage = page;
+                    this.renderWords();
+                }
+            }
+
+            renderPagination() {
+                const totalPages = this.getTotalPages();
+                if (totalPages <= 1) return '';
+
+                const startPage = Math.max(1, this.currentPage - 2);
+                const endPage = Math.min(totalPages, this.currentPage + 2);
+                
+                let paginationHTML = '<div class="pagination">';
+                
+                // Previous button
+                if (this.currentPage > 1) {
+                    paginationHTML += `<button class="page-btn" onclick="viewer.goToPage(${this.currentPage - 1})">‹ Previous</button>`;
+                }
+                
+                // First page
+                if (startPage > 1) {
+                    paginationHTML += `<button class="page-btn" onclick="viewer.goToPage(1)">1</button>`;
+                    if (startPage > 2) {
+                        paginationHTML += '<span class="page-dots">...</span>';
+                    }
+                }
+                
+                // Page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    const activeClass = i === this.currentPage ? 'active' : '';
+                    paginationHTML += `<button class="page-btn ${activeClass}" onclick="viewer.goToPage(${i})">${i}</button>`;
+                }
+                
+                // Last page
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        paginationHTML += '<span class="page-dots">...</span>';
+                    }
+                    paginationHTML += `<button class="page-btn" onclick="viewer.goToPage(${totalPages})">${totalPages}</button>`;
+                }
+                
+                // Next button
+                if (this.currentPage < totalPages) {
+                    paginationHTML += `<button class="page-btn" onclick="viewer.goToPage(${this.currentPage + 1})">Next ›</button>`;
+                }
+                
+                paginationHTML += '</div>';
+                
+                // Page info
+                const startItem = (this.currentPage - 1) * this.wordsPerPage + 1;
+                const endItem = Math.min(this.currentPage * this.wordsPerPage, this.filteredWords.length);
+                paginationHTML += `<div class="page-info">Showing ${startItem}-${endItem} of ${this.filteredWords.length} words</div>`;
+                
+                return paginationHTML;
+            }
+
+            renderWords() {
+                const content = document.getElementById('content');
+                
+                if (this.filteredWords.length === 0) {
+                    if (this.words.length === 0) {
+                        content.innerHTML = '<div class="loading">📖 Load a dictionary file to get started</div>';
+                    } else {
+                        content.innerHTML = '<div class="no-results">🔍 No words found matching your search</div>';
+                    }
+                    return;
+                }
+
+                const paginatedWords = this.getPaginatedWords();
+                const wordsHTML = paginatedWords.map(word => `
+                    <div class="word-entry">
+                        <div class="word-text">
+                            ${word.text}
+                            ${word.pos ? `<span class="pos-tag">${word.pos}</span>` : ''}
+                        </div>
+                        <div class="definition ${word.definition ? '' : 'no-definition'}">
+                            ${word.definition || 'No definition available'}
+                        </div>
+                    </div>
+                `).join('');
+
+                const paginationHTML = this.renderPagination();
+                
+                content.innerHTML = `
+                    ${paginationHTML}
+                    <div class="words-container">
+                        ${wordsHTML}
+                    </div>
+                    ${paginationHTML}
+                `;
+            }
+
+            showLoading(message) {
+                document.getElementById('content').innerHTML = `<div class="loading">${message}</div>`;
+            }
+
+            showError(message) {
+                document.getElementById('content').innerHTML = `<div class="error">${message}</div>`;
+            }
+
+            showMessage(message, type) {
+                console.log(`${type}: ${message}`);
+            }
+        }
+
+        // Initialize the dictionary viewer
+        const viewer = new DictionaryViewer();
+    </script>
+</body>
+</html>

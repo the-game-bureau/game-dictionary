@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Combined Dictionary Management Tools
+Simplified Dictionary Management Tools
 
-This script provides three main functions:
+This script provides two main functions:
 1. Download and maintain the ENABLE word list (word_fetcher functionality)
 2. Convert words.txt to dictionary.xml format (xml_converter functionality)  
-3. Add real dictionary definitions and parts of speech to words in dictionary.xml
 
 Usage:
   python dictionary_tools.py [command]
@@ -13,8 +12,7 @@ Usage:
 Commands:
   fetch     - Download/update word list from ENABLE
   convert   - Convert words.txt to dictionary.xml
-  define    - Add real dictionary definitions to 100 words in dictionary.xml
-  all       - Run all commands in sequence (fetch -> convert -> define)
+  all       - Run all commands in sequence (fetch -> convert)
   
 If no command is specified, shows interactive menu.
 
@@ -37,9 +35,7 @@ import time
 import urllib.error
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
-import random
 import argparse
-import json
 
 # Configuration constants
 DOWNLOAD_TIMEOUT = 30
@@ -47,21 +43,6 @@ RETRY_ATTEMPTS = 3
 RETRY_DELAY = 5
 CHUNK_SIZE = 8192
 ENABLE_URL = "https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt"
-
-# Free Dictionary API (no API key required)
-DICTIONARY_API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/"
-
-# WordsAPI (freemium - 2500 requests/day with API key via RapidAPI)
-WORDSAPI_URL = "https://wordsapiv1.p.rapidapi.com/words/"
-# Set your API key here if you want to use WordsAPI (get free key at rapidapi.com)
-RAPIDAPI_KEY = None  # Replace with your API key for 2500 extra requests/day
-
-# Wordnik API (free tier available)
-WORDNIK_API_URL = "https://api.wordnik.com/v4/word.json/"
-WORDNIK_API_KEY = None  # Replace with your API key for even more requests
-
-API_TIMEOUT = 10
-API_RETRY_DELAY = 1
 
 def find_project_root():
     """Find the project root by traversing up from the script location."""
@@ -117,319 +98,6 @@ def get_file_paths():
     backup_path = data_dir / "words_backup.txt"
     
     return base_dir, data_dir, words_path, xml_path, backup_path
-
-def lookup_definition_free_dict(word, logger=None):
-    """Look up definition from Free Dictionary API (no key required)."""
-    try:
-        url = f"{DICTIONARY_API_URL}{word.lower()}"
-        request = urllib.request.Request(url)
-        request.add_header('User-Agent', 'DictionaryTools/1.0')
-        
-        with urllib.request.urlopen(request, timeout=API_TIMEOUT) as response:
-            data = json.loads(response.read().decode('utf-8'))
-        
-        if not data or not isinstance(data, list):
-            return None
-        
-        entry = data[0]
-        if 'meanings' not in entry or not entry['meanings']:
-            return None
-        
-        meaning = entry['meanings'][0]
-        part_of_speech = meaning.get('partOfSpeech', 'unknown')
-        
-        if 'definitions' not in meaning or not meaning['definitions']:
-            return None
-        
-        definition = meaning['definitions'][0].get('definition', '')
-        
-        if definition:
-            definition = definition.strip()
-            if definition.endswith('.'):
-                definition = definition[:-1]
-            if definition:
-                definition = definition[0].upper() + definition[1:]
-            return (definition, part_of_speech)
-        
-        return None
-        
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        else:
-            if logger:
-                logger.warning(f"Free Dict API HTTP error for '{word}': {e.code}")
-            return None
-    except Exception as e:
-        if logger:
-            logger.warning(f"Free Dict API error for '{word}': {e}")
-        return None
-
-def lookup_definition_wordsapi(word, logger=None):
-    """Look up definition from WordsAPI (requires RapidAPI key)."""
-    if not RAPIDAPI_KEY:
-        return None
-        
-    try:
-        url = f"{WORDSAPI_URL}{word.lower()}"
-        request = urllib.request.Request(url)
-        request.add_header('X-RapidAPI-Key', RAPIDAPI_KEY)
-        request.add_header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
-        request.add_header('User-Agent', 'DictionaryTools/1.0')
-        
-        with urllib.request.urlopen(request, timeout=API_TIMEOUT) as response:
-            data = json.loads(response.read().decode('utf-8'))
-        
-        if 'results' not in data or not data['results']:
-            return None
-        
-        result = data['results'][0]
-        definition = result.get('definition', '')
-        part_of_speech = result.get('partOfSpeech', 'unknown')
-        
-        if definition:
-            definition = definition.strip()
-            if definition.endswith('.'):
-                definition = definition[:-1]
-            if definition:
-                definition = definition[0].upper() + definition[1:]
-            return (definition, part_of_speech)
-        
-        return None
-        
-    except urllib.error.HTTPError as e:
-        error_msg = f"WordsAPI HTTP {e.code}"
-        
-        # Read error response for more details
-        try:
-            error_response = e.read().decode('utf-8')
-            error_data = json.loads(error_response)
-            if 'message' in error_data:
-                error_msg += f": {error_data['message']}"
-        except:
-            pass
-            
-        if e.code == 401:
-            error_msg += " (Invalid API key - check your RapidAPI key)"
-        elif e.code == 403:
-            error_msg += " (Rate limit exceeded or subscription required)"
-        elif e.code == 404:
-            return None  # Word not found - this is normal
-        elif e.code == 429:
-            error_msg += " (Too many requests - rate limited)"
-        
-        if logger:
-            logger.warning(f"{error_msg} for word '{word}'")
-        else:
-            print(f"   ⚠️  {error_msg}")
-        return None
-        
-    except Exception as e:
-        if logger:
-            logger.warning(f"WordsAPI error for '{word}': {e}")
-        else:
-            print(f"   ⚠️  WordsAPI error for '{word}': {e}")
-        return None
-
-def lookup_definition_wordnik(word, logger=None):
-    """Look up definition from Wordnik API (requires free API key)."""
-    if not WORDNIK_API_KEY:
-        return None
-        
-    try:
-        url = f"{WORDNIK_API_URL}{word.lower()}/definitions?limit=1&includeRelated=false&sourceDictionaries=all&useCanonical=false&includeTags=false&api_key={WORDNIK_API_KEY}"
-        request = urllib.request.Request(url)
-        request.add_header('User-Agent', 'DictionaryTools/1.0')
-        
-        with urllib.request.urlopen(request, timeout=API_TIMEOUT) as response:
-            data = json.loads(response.read().decode('utf-8'))
-        
-        if not data or not isinstance(data, list):
-            return None
-        
-        definition_obj = data[0]
-        definition = definition_obj.get('text', '')
-        part_of_speech = definition_obj.get('partOfSpeech', 'unknown')
-        
-        if definition:
-            definition = definition.strip()
-            if definition.endswith('.'):
-                definition = definition[:-1]
-            if definition:
-                definition = definition[0].upper() + definition[1:]
-            return (definition, part_of_speech)
-        
-        return None
-        
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        else:
-            if logger:
-                logger.warning(f"Wordnik API HTTP error for '{word}': {e.code}")
-            return None
-    except Exception as e:
-        if logger:
-            logger.warning(f"Wordnik API error for '{word}': {e}")
-        return None
-
-def lookup_definition(word, logger=None):
-    """
-    Look up definition using multiple APIs as fallbacks.
-    Returns tuple of (definition, part_of_speech) or None if not found.
-    """
-    # Try APIs in order of preference
-    apis = [
-        ("Free Dictionary", lookup_definition_free_dict),
-        ("WordsAPI", lookup_definition_wordsapi),
-        ("Wordnik", lookup_definition_wordnik),
-    ]
-    
-    for api_name, api_func in apis:
-        result = api_func(word, logger)
-        if result:
-            if logger:
-                logger.debug(f"Found definition for '{word}' using {api_name}")
-            return result
-        
-        # Small delay between API calls
-        time.sleep(0.1)
-    
-    return None
-
-def test_apis(logger=None):
-    """Test all configured APIs with a simple word to verify they're working."""
-    test_word = "hello"
-    print(f"\n🧪 Testing APIs with word '{test_word}'...")
-    
-    # Test Free Dictionary API
-    result = lookup_definition_free_dict(test_word, logger)
-    if result:
-        print(f"   ✅ Free Dictionary API: Working")
-    else:
-        print(f"   ❌ Free Dictionary API: Failed")
-    
-    # Test WordsAPI if key is provided
-    if RAPIDAPI_KEY:
-        result = lookup_definition_wordsapi(test_word, logger)
-        if result:
-            print(f"   ✅ WordsAPI: Working")
-        else:
-            print(f"   ❌ WordsAPI: Failed (check your API key)")
-    else:
-        print(f"   ⏸️  WordsAPI: Skipped (no API key)")
-    
-    # Test Wordnik if key is provided
-    if WORDNIK_API_KEY:
-        result = lookup_definition_wordnik(test_word, logger)
-        if result:
-            print(f"   ✅ Wordnik API: Working")
-        else:
-            print(f"   ❌ Wordnik API: Failed (check your API key)")
-    else:
-        print(f"   ⏸️  Wordnik API: Skipped (no API key)")
-    
-    print(f"   💡 Run this test anytime by calling test_apis()")
-def lookup_definitions_for_batch(words, max_count=100, logger=None):
-    """
-    Look up definitions for a batch of words from dictionary API.
-    Strategy: Take first 100 + last 100 words (likely common) + random words for variety.
-    Returns list of tuples: (word_elem, word_text, definition, pos)
-    """
-    definitions_found = []
-    
-    if logger:
-        logger.info(f"Looking up definitions for up to {max_count} words from dictionary API")
-    
-    word_list = list(words)
-    
-    # Strategy: Check up to 5000 words for better coverage
-    max_words_to_check = 5000
-    words_to_check = []
-    
-    # First 100 words (alphabetically early - often common words)
-    if len(word_list) >= 100:
-        first_100 = word_list[:100]
-        words_to_check.extend(first_100)
-        print(f"   📝 Selected first 100 undefined words (alphabetically early)")
-    
-    # Last 100 words (alphabetically late - often common words)
-    if len(word_list) >= 200:
-        last_100 = word_list[-100:]
-        words_to_check.extend(last_100)
-        print(f"   📝 Selected last 100 undefined words (alphabetically late)")
-    elif len(word_list) >= 100:
-        # If we have 100-199 words, take the second half
-        second_half = word_list[len(word_list)//2:]
-        words_to_check.extend(second_half)
-        print(f"   📝 Selected last {len(second_half)} undefined words")
-    
-    # Add random words for variety (up to ~4800 more)
-    remaining_words = []
-    if len(word_list) > 200:
-        # Exclude first 100 and last 100 from random selection
-        remaining_words = word_list[100:-100]
-    elif len(word_list) > 100:
-        # Exclude first 100 only
-        remaining_words = word_list[100:]
-    
-    if remaining_words:
-        remaining_slots = max_words_to_check - len(words_to_check)
-        if remaining_slots > 0:
-            random_sample_size = min(remaining_slots, len(remaining_words))
-            random_words = random.sample(remaining_words, random_sample_size)
-            words_to_check.extend(random_words)
-            print(f"   🎲 Added {random_sample_size} random words for variety")
-    
-    # If we have very few words total, just use them all
-    if len(word_list) <= 200:
-        words_to_check = word_list
-        print(f"   📝 Using all {len(word_list)} remaining undefined words")
-    
-    # Remove duplicates while preserving order
-    seen = set()
-    unique_words = []
-    for item in words_to_check:
-        word_text = item[1]
-        if word_text not in seen:
-            seen.add(word_text)
-            unique_words.append(item)
-    
-    print(f"   🔍 Checking {len(unique_words)} unique words total (targeting {max_count} definitions)")
-    
-    processed = 0
-    for word_elem, word_text in unique_words:
-        if len(definitions_found) >= max_count:
-            break
-        
-        processed += 1
-        
-        # Show progress more frequently due to higher volume
-        if processed % 50 == 0:
-            print(f"   📖 Processed {processed} words, found {len(definitions_found)} definitions...")
-        
-        result = lookup_definition(word_text, logger)
-        if result:
-            definition, pos = result
-            definitions_found.append((word_elem, word_text, definition, pos))
-            
-            if logger and len(definitions_found) % 25 == 0:
-                logger.info(f"Found {len(definitions_found)} definitions so far...")
-        
-        # Slightly faster pace due to higher volume, but still respectful
-        time.sleep(0.05)
-        
-        # Stop if we've found enough definitions
-        if len(definitions_found) >= max_count:
-            break
-    
-    hit_rate = (len(definitions_found) / processed * 100) if processed > 0 else 0
-    print(f"   ✅ Success rate: {len(definitions_found)}/{processed} ({hit_rate:.1f}%)")
-    
-    if logger:
-        logger.info(f"Successfully found {len(definitions_found)} definitions from {processed} words checked")
-    
-    return definitions_found
 
 def create_backup(words_path, backup_path, logger):
     """Create backup of existing word list before modifications."""
@@ -663,7 +331,7 @@ def convert_to_xml(logger):
             logger.error("No words found in input file")
             return False
         
-        # Check if XML already exists and has definitions
+        # Check if XML already exists and preserve existing definitions
         existing_definitions = {}
         words_with_definitions = 0
         
@@ -674,26 +342,20 @@ def convert_to_xml(logger):
                 
                 if root.tag == "dictionary":
                     for word_elem in root.findall("word"):
-                        # Extract word text
-                        text_elem = word_elem.find("text")
-                        if text_elem is not None:
-                            word_text = text_elem.text
-                        else:
-                            word_text = word_elem.text
-                        
-                        if word_text:
-                            word_text = word_text.strip().lower()
+                        # Check if this word has definitions (has child elements)
+                        if len(word_elem) > 0:
+                            # Extract word text
+                            text_elem = word_elem.find("text")
+                            if text_elem is not None:
+                                word_text = text_elem.text
+                            else:
+                                word_text = word_elem.text
                             
-                            # Check if it has definition
-                            def_elem = word_elem.find("definition")
-                            pos_elem = word_elem.find("pos")
-                            
-                            if def_elem is not None and pos_elem is not None:
-                                definition = def_elem.text
-                                pos = pos_elem.text
-                                if definition and pos:
-                                    existing_definitions[word_text] = (definition, pos)
-                                    words_with_definitions += 1
+                            if word_text:
+                                word_text = word_text.strip().lower()
+                                # Store the entire element structure for words with definitions
+                                existing_definitions[word_text] = word_elem
+                                words_with_definitions += 1
                 
                 logger.info(f"Found {words_with_definitions} existing definitions to preserve")
                 print(f"   📚 Preserving {words_with_definitions} existing definitions")
@@ -710,25 +372,36 @@ def convert_to_xml(logger):
         
         for word in new_words:
             word_lower = word.lower()
-            word_element = ET.SubElement(root, "word")
             
             # Check if we have existing definition for this word
             if word_lower in existing_definitions:
-                # Preserve existing definition
-                definition, pos = existing_definitions[word_lower]
+                # Copy the existing element with all its structure
+                existing_elem = existing_definitions[word_lower]
+                new_elem = ET.SubElement(root, "word")
                 
-                text_elem = ET.SubElement(word_element, "text")
-                text_elem.text = word
+                # Copy all attributes
+                new_elem.attrib = existing_elem.attrib.copy()
                 
-                def_elem = ET.SubElement(word_element, "definition")
-                def_elem.text = definition
+                # Copy text content if it exists
+                if existing_elem.text:
+                    new_elem.text = existing_elem.text
                 
-                pos_elem = ET.SubElement(word_element, "pos")
-                pos_elem.text = pos
+                # Copy all child elements
+                for child in existing_elem:
+                    new_child = ET.SubElement(new_elem, child.tag)
+                    new_child.text = child.text
+                    new_child.attrib = child.attrib.copy()
+                    if child.tail:
+                        new_child.tail = child.tail
+                
+                # Copy tail if it exists
+                if existing_elem.tail:
+                    new_elem.tail = existing_elem.tail
                 
                 preserved_count += 1
             else:
-                # New word without definition
+                # New word without definition - simple structure
+                word_element = ET.SubElement(root, "word")
                 word_element.text = word
                 new_word_count += 1
         
@@ -755,138 +428,13 @@ def convert_to_xml(logger):
         logger.error(f"Convert operation failed: {e}")
         return False
 
-def add_definitions(logger):
-    """Add AI-generated definitions and parts of speech to words in dictionary.xml."""
-    try:
-        logger.info("=== ADD DEFINITIONS OPERATION ===")
-        base_dir, data_dir, words_path, xml_path, backup_path = get_file_paths()
-        
-        if not xml_path.exists():
-            logger.error(f"XML file not found: {xml_path}")
-            return False
-        
-        tree = ET.parse(xml_path)
-        root = tree.getroot()
-        
-        if root.tag != "dictionary":
-            logger.error("Root element is not <dictionary>")
-            return False
-        
-        words_needing_definitions = []
-        words_with_definitions = 0
-        
-        for word_elem in root.findall("word"):
-            has_definition = word_elem.find("definition") is not None
-            
-            if has_definition:
-                words_with_definitions += 1
-                continue
-            
-            text_elem = word_elem.find("text")
-            if text_elem is not None:
-                word_text = text_elem.text
-            else:
-                word_text = word_elem.text
-            
-            if word_text and word_text.strip():
-                words_needing_definitions.append((word_elem, word_text.strip().lower()))
-        
-        logger.info(f"Found {len(words_needing_definitions)} words without definitions")
-        logger.info(f"Found {words_with_definitions} words already with definitions")
-        
-        print(f"\n📊 Definition Status:")
-        print(f"   • Total words in dictionary: {len(root.findall('word')):,}")
-        print(f"   • Words with definitions: {words_with_definitions:,}")
-        print(f"   • Words without definitions: {len(words_needing_definitions):,}")
-        print(f"   • Words we can define this run: {min(len(words_needing_definitions), 100):,}")
-        
-        if len(words_needing_definitions) == 0:
-            print(f"\n🎉 All words have been defined!")
-            return True
-
-        print(f"\n📖 Looking up definitions from multiple dictionary APIs...")
-        
-        # Test APIs first
-        test_apis(logger)
-        
-        # Show which APIs are available
-        available_apis = ["Free Dictionary API (dictionaryapi.dev)"]
-        if RAPIDAPI_KEY:
-            available_apis.append("WordsAPI (2500/day)")
-        if WORDNIK_API_KEY:
-            available_apis.append("Wordnik API")
-        
-        print(f"\n   🔗 Available APIs: {', '.join(available_apis)}")
-        if not RAPIDAPI_KEY:
-            print(f"   💡 Get RapidAPI key for WordsAPI: https://rapidapi.com/dpventures/api/wordsapi")
-        if not WORDNIK_API_KEY:
-            print(f"   💡 Get Wordnik API key: https://developer.wordnik.com/")
-        
-        api_definitions = lookup_definitions_for_batch(words_needing_definitions, 100, logger)
-        words_to_process = api_definitions
-        
-        logger.info(f"Adding definitions to {len(words_to_process)} words")
-        
-        if not words_to_process:
-            logger.info("No definitions found from dictionary API for any words")
-            print(f"\n📝 No definitions found!")
-            print(f"   • The dictionary API didn't have definitions for the words checked")
-            print(f"   • This can happen with very uncommon or specialized words")
-            print(f"   • Try running again - different words will be checked")
-            return True
-        
-        for word_elem, word_text, definition, pos in words_to_process:
-            if word_elem.find("text") is None and word_elem.text:
-                old_text = word_elem.text
-                word_elem.text = None
-                word_elem.tail = word_elem.tail
-                
-                text_elem = ET.SubElement(word_elem, "text")
-                text_elem.text = old_text
-            
-            def_elem = ET.SubElement(word_elem, "definition")
-            def_elem.text = definition
-            
-            pos_elem = ET.SubElement(word_elem, "pos")
-            pos_elem.text = pos
-        
-        rough_string = ET.tostring(root, encoding='unicode')
-        reparsed = minidom.parseString(rough_string)
-        pretty_xml = reparsed.toprettyxml(indent="    ")
-        
-        lines = [line for line in pretty_xml.split('\n') if line.strip()]
-        pretty_xml = '\n'.join(lines)
-        
-        with open(xml_path, 'w', encoding='utf-8') as f:
-            f.write(pretty_xml)
-        
-        logger.info(f"Successfully updated {xml_path}")
-        logger.info(f"Added {len(words_to_process)} dictionary definitions")
-        print(f"\n📖 Dictionary definitions added: {len(words_to_process)} words enhanced")
-        
-        if len(words_to_process) < 100 and len(words_needing_definitions) > len(words_to_process):
-            remaining = len(words_needing_definitions) - len(words_to_process)
-            print(f"   ℹ️  {remaining} words couldn't be found in any dictionary API")
-            print(f"   💡 Try running again - different words will be checked")
-            if not RAPIDAPI_KEY:
-                print(f"   🚀 Add a RapidAPI key to unlock 2500 more lookups/day!")
-            if not WORDNIK_API_KEY:
-                print(f"   🚀 Add a Wordnik API key for even more coverage!")
-        
-        return True
-        
-    except Exception as e:
-        logger.error(f"Add definitions operation failed: {e}")
-        return False
-
 def run_all_operations(logger):
-    """Run all operations in sequence: fetch -> convert -> define"""
+    """Run all operations in sequence: fetch -> convert"""
     logger.info("=== RUNNING ALL OPERATIONS ===")
     
     operations = [
         ("Fetching words", fetch_words),
-        ("Converting to XML", convert_to_xml),
-        ("Adding definitions", add_definitions)
+        ("Converting to XML", convert_to_xml)
     ]
     
     for operation_name, operation_func in operations:
@@ -909,28 +457,25 @@ def show_menu():
     print()
     print("  1. Fetch Words    - Download/update word list from ENABLE")
     print("  2. Convert XML    - Convert words.txt to dictionary.xml")
-    print("  3. Add Definitions- Add real dictionary definitions to 100 words")
-    print("  4. Run All        - Execute all operations in sequence")
-    print("  5. Exit           - Quit the program")
+    print("  3. Run All        - Execute all operations in sequence")
+    print("  4. Exit           - Quit the program")
     print()
     print("-" * 50)
     
     while True:
         try:
-            choice = input("Enter your choice (1-5): ").strip()
+            choice = input("Enter your choice (1-4): ").strip()
             
             if choice == '1':
                 return 'fetch'
             elif choice == '2':
                 return 'convert'
             elif choice == '3':
-                return 'define'
-            elif choice == '4':
                 return 'all'
-            elif choice == '5':
+            elif choice == '4':
                 return 'exit'
             else:
-                print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
+                print("Invalid choice. Please enter 1, 2, 3, or 4.")
                 
         except (EOFError, KeyboardInterrupt):
             print("\n\nExiting...")
@@ -944,9 +489,6 @@ def execute_command(command, logger):
     elif command == 'convert':
         print("\n🔄 Converting words.txt to dictionary.xml...")
         return convert_to_xml(logger)
-    elif command == 'define':
-        print("\n🔄 Adding real dictionary definitions...")
-        return add_definitions(logger)
     elif command == 'all':
         print("\n🔄 Running all operations...")
         return run_all_operations(logger)
@@ -965,13 +507,12 @@ def main():
 Commands:
   fetch     Download/update word list from ENABLE
   convert   Convert words.txt to dictionary.xml
-  define    Add real dictionary definitions to 100 words in dictionary.xml
   all       Run all commands in sequence
             """
         )
         parser.add_argument(
             'command', 
-            choices=['fetch', 'convert', 'define', 'all'],
+            choices=['fetch', 'convert', 'all'],
             help='Command to execute'
         )
         
